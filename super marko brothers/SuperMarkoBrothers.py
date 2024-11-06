@@ -20,14 +20,20 @@ while run:
     pygame.draw.rect(screen, (255, 0, 0), player)
 
     key = pygame.key.get_pressed()
-    if key[pygame.K_a] == True:
+    
+    if (key[pygame.K_a] == True) and (key[pygame.K_d] == True):
+        pass
+    elif key[pygame.K_a] == True:
         player.move_ip(-1, 0)
     elif key[pygame.K_d] == True:
         player.move_ip(1, 0)
+        
+    if (key[pygame.K_a] == True) and (key[pygame.K_d] == True):
+        pass
     elif key[pygame.K_w] == True:
-        player.move_ip(0, -1) 
+        pass
     elif key[pygame.K_s] == True:
-        player.move_ip(0, 1)  
+        pass
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
