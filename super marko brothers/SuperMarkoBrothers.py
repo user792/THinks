@@ -34,6 +34,7 @@ SCREEN_HEIGHT = 600
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
+clock = pygame.time.Clock()
 
 player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=1, max_speed=10,character =pygame.Rect((300, 250, 50, 50)))
 jump = 10
@@ -65,5 +66,5 @@ while run:
             run = False
 
     pygame.display.update()
-    
+    clock.tick(30)
 pygame.quit()
