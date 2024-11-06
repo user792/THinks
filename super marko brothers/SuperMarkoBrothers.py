@@ -40,8 +40,9 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 polo_frames = []
 for i in range(1, 5):
-    frame = pygame.image.load(f'Polo/Polo{i}.png').convert_alpha()  
-    frame = pygame.transform.scale(frame,(100,100))
+    frame = pygame.image.load('doux.png').convert_alpha()
+    frame = spritesheet.SpriteSheet(frame)
+    frame = frame.get_image(i, 16, 16, 3)
     polo_frames.append(frame)
 
 player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=1, max_speed=10,character =polo_frames[0],x_pos=0,y_pos=0)
