@@ -1,5 +1,6 @@
 #the code goes here
 import pygame
+import spritesheet
 pygame.init()
 
 class Attribute:
@@ -40,7 +41,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 polo_frames = []
 for i in range(1, 5):
-    frame = pygame.image.load('doux.png').convert_alpha()
+    frame = pygame.image.load('polo_sprite').convert_alpha()
     frame = spritesheet.SpriteSheet(frame)
     frame = frame.get_image(i, 16, 16, 3)
     polo_frames.append(frame)
