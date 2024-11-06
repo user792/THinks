@@ -18,9 +18,9 @@ class Attribute:
 
     def update_velocity(self, y_delta, x_delta):
         self.y_velocity += y_delta
-        self.x_velocity += x_delta
-        if self.x_velocity > self.max_speed:
-            self.x_velocity = self.max_speed
+        self.x_velocity = self.x_velocity / x_delta
+        
+        self.character.move_ip(self.x_velocity,self.y_velocity)
 
     def set_on_ground(self, on_ground_status):
         self.on_ground = on_ground_status
@@ -34,12 +34,14 @@ SCREEN_HEIGHT = 600
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-clock = pygame.time.Clock()
 
 player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=1, max_speed=10,character =pygame.Rect((300, 250, 50, 50)))
-jump = 10
+jump = -10
 run = True
+clock = pygame.time.Clock()
 while run:
+
+    player.update_velocity(1.1,1.1)
 
     screen.fill((0,0,0))
 
@@ -49,9 +51,9 @@ while run:
     if (key[pygame.K_a] == True) and (key[pygame.K_d] == True):
         pass
     elif key[pygame.K_a] == True:
-        player.character.move_ip(-player.speed, 0)
+        player.x_velocity += -player.speed
     elif key[pygame.K_d] == True:
-        player.character.move_ip(player.speed, 0)
+        player.x_velocity += player.speed
     if (key[pygame.K_a] == True) and (key[pygame.K_d] == True):
         pass
     elif key[pygame.K_w] == True:
