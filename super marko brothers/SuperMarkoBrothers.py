@@ -29,6 +29,7 @@ class Attribute:
 
     def set_speed(self, new_speed):
         self.speed = new_speed
+    
 
 
 
@@ -43,32 +44,39 @@ for i in range(1, 5):
     frame = pygame.transform.scale(frame,(100,100))
     polo_frames.append(frame)
 
-player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=1, max_speed=10,character =pygame.Rect((300, 250, 50, 50)),x_pos=0,y_pos=0)
+player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=1, max_speed=10,character =polo_frames[0],x_pos=0,y_pos=0)
 jump = -10
 run = True
 clock = pygame.time.Clock()
+delay = 0
+frameid = 0
 while run:
-
+    player.character = polo_frames
+    delay += 1
+    if delay == 3:
+        frameid += 1
+        delay = 0
+        if frameid >= 4:
+            frameid = 0
     player.update_velocity(1.1,1.1)
 
     screen.fill((0,0,0))
-    screen.blit(polo_frames[0],(player.x_pos,player.y_pos))
-    pygame.draw.rect(screen, (255, 0, 0), player.character)
+    
 
     key = pygame.key.get_pressed()
     if (key[pygame.K_a] == True) and (key[pygame.K_d] == True):
-        pass
+        screen.blit(player.character[0],(player.x_pos,player.y_pos))
     elif key[pygame.K_a] == True:
         player.x_velocity += -player.speed
-        
+        screen.blit(pygame.transform.flip(player.character[frameid],True,False),(player.x_pos,player.y_pos))
     elif key[pygame.K_d] == True:
         player.x_velocity += player.speed
-    
-    if (key[pygame.K_a] == True) and (key[pygame.K_d] == True):
-        pass
-    elif key[pygame.K_w] == True:
-        if player.on_ground == True:
-             player.y_velocity = jump
+        screen.blit(player.character[frameid],(player.x_pos,player.y_pos))
+    else:
+        screen.blit(player.character[0],(player.x_pos,player.y_pos))
+
+    if (key[pygame.K_w] == True) and (player.on_ground == True):
+        player.y_velocity = jump
              
     elif key[pygame.K_s] == True:
         pass
