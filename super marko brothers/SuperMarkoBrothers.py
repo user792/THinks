@@ -3,14 +3,15 @@ import pygame
 pygame.init()
 
 class Attribute:
-    def __init__(self, y_velocity:float, x_velocity:float, on_ground:bool, speed:float, max_speed:float,character):
+    def __init__(self, y_velocity:float, x_velocity:float, on_ground:bool, speed:float, max_speed:float,character, x_pos:float, y_pos:float):
         self.y_velocity = y_velocity
         self.x_velocity = x_velocity
         self.on_ground = on_ground
         self.speed = speed
         self.max_speed = max_speed
         self.character = character
-
+        self.x_pos = x_pos
+        self.y_pos = y_pos
     def __repr__(self):
         return (f"Attribute(y_velocity={self.y_velocity}, x_velocity={self.x_velocity}, "
                 f"on_ground={self.on_ground}, speed={self.speed})")
@@ -20,7 +21,8 @@ class Attribute:
         self.y_velocity += y_delta
         self.x_velocity = self.x_velocity / x_delta
         
-        self.character.move_ip(self.x_velocity,self.y_velocity)
+        self.x_pos += self.x_velocity
+        self.y_pos += self.y_velocity
 
     def set_on_ground(self, on_ground_status):
         self.on_ground = on_ground_status
@@ -41,7 +43,7 @@ for i in range(1, 5):
     frame = pygame.transform.scale(frame,(100,100))
     polo_frames.append(frame)
 
-player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=1, max_speed=10,character =pygame.Rect((300, 250, 50, 50)))
+player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=1, max_speed=10,character =pygame.Rect((300, 250, 50, 50)),x_pos=0,y_pos=0)
 jump = -10
 run = True
 clock = pygame.time.Clock()
@@ -50,7 +52,7 @@ while run:
     player.update_velocity(1.1,1.1)
 
     screen.fill((0,0,0))
-    screen.blit(polo_frames[0],(0,0))
+    screen.blit(polo_frames[0],(player.x_pos,player.y_pos))
     pygame.draw.rect(screen, (255, 0, 0), player.character)
 
     key = pygame.key.get_pressed()
