@@ -13,10 +13,7 @@ class Attribute:
         self.character = character
         self.x_pos = x_pos
         self.y_pos = y_pos
-    def __repr__(self):
-        return (f"Attribute(y_velocity={self.y_velocity}, x_velocity={self.x_velocity}, "
-                f"on_ground={self.on_ground}, speed={self.speed})")
-
+        self.rect = pygame.rect.Rect(self.x_pos,self.y_pos,80,80)
 
     def update_velocity(self, y_delta, x_delta):
         self.y_velocity += y_delta
@@ -24,7 +21,14 @@ class Attribute:
         
         self.x_pos += self.x_velocity
         self.y_pos += self.y_velocity
-
+        
+        global global_x_offset
+        
+        if self.x_pos >= 550:
+            self.x_pos = 549
+            global_x_offset -= player.x_velocity
+        if self.x_pos <= 0:
+            self.x_pos = 1
     def set_on_ground(self, on_ground_status):
         self.on_ground = on_ground_status
 
@@ -46,14 +50,17 @@ for i in range(1, 8):
     polo_frames.append(frame)
 
 player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=1, max_speed=10,character =polo_frames,x_pos=0,y_pos=0)
+player2 = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=1, max_speed=10,character =polo_frames,x_pos=0,y_pos=0)
 jump = -10
 run = True
 clock = pygame.time.Clock()
 delay = 0
 frameid = 0
+
 global_x_offset = 0
 
-
+x_delta = 1.1
+y_delta = 1.1
 
 #level 1
 import level1
@@ -76,15 +83,22 @@ while run:
         delay = 0
         if frameid >= 4:
             frameid = 0
-    player.update_velocity(1.1,1.1)
+    player.update_velocity(x_delta,y_delta)
     if player.x_pos >= 550:
         player.x_pos = 549
         global_x_offset -= player.x_velocity
     if player.x_pos <= 0:
         player.x_pos = 1
+    
+    player2.update_velocity(1.1,1.1)
+    if player2.x_pos >= 550:
+        player2.x_pos = 549
+        global_x_offset -= player.x_velocity
+    if player2.x_pos <= 0:
+        player2.x_pos = 1
     screen.fill((0,0,0))
     
-
+    level1.funkio()
     key = pygame.key.get_pressed()
 
 
