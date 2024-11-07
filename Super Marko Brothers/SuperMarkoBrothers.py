@@ -1,5 +1,6 @@
 #the code goes here
 import pygame
+
 pygame.init()
 
 class Attribute:
@@ -41,7 +42,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 polo_frames = []
 for i in range(1, 8):
     frame = pygame.image.load(f'Polo/Polo{i}.png').convert_alpha()  
-    frame = pygame.transform.scale(frame,(100,100))
+    frame = pygame.transform.scale(frame,(80,80))
     polo_frames.append(frame)
 
 player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=1, max_speed=10,character =polo_frames,x_pos=0,y_pos=0)
@@ -55,8 +56,7 @@ global_x_offset = 0
 
 
 #level 1
-sand10x = pygame.image.load("materials/sand10x.png").convert_alpha()  
-sand10x = pygame.transform.scale(sand10x,(1600,160))
+import level1
 
 
 
@@ -128,7 +128,7 @@ while run:
 
  
 
-    screen.blit(sand10x,(global_x_offset,400))
+    
     
 
     pygame.display.update()
