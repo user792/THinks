@@ -128,7 +128,8 @@ sand10x = pygame.transform.scale(sand10x,(800,80))
 
 
 
-
+background = pygame.image.load('background.png')
+background = pygame.transform.scale(background, (8000, 600))
 # level counter
 level = 1
 
@@ -136,7 +137,7 @@ level = 1
 while run:
     #näytön tyhjennys
     screen.fill((0,0,0))
-
+    screen.blit(background, (global_x_offset, 0))
     #animaation juttuja
     delay += 1
     if delay == 3:
