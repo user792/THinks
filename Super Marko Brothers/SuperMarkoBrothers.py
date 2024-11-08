@@ -128,8 +128,8 @@ sand10x = pygame.transform.scale(sand10x,(800,80))
 
 
 
-background = pygame.image.load('background.png')
-background = pygame.transform.scale(background, (8000, 600))
+level1_bg = pygame.image.load('materials/background.png')
+level1_bg = pygame.transform.scale(level1_bg, (8000, 600))
 # level counter
 level = 1
 
@@ -137,7 +137,7 @@ level = 1
 while run:
     #näytön tyhjennys
     screen.fill((0,0,0))
-    screen.blit(background, (global_x_offset, 0))
+    
     #animaation juttuja
     delay += 1
     if delay == 3:
@@ -164,10 +164,11 @@ while run:
 
     #level 1 jutut
     if level == 1:
-        screen.blit(sand10x,(global_x_offset,400))
+        screen.blit(level1_bg, (global_x_offset, global_y_offset))
+        screen.blit(sand10x,(global_x_offset,520))
         
-        if pygame.Rect.colliderect(pygame.rect.Rect(global_x_offset,400,800,80),player.rect):
-            player.y_pos = 320
+        if pygame.Rect.colliderect(pygame.rect.Rect(global_x_offset,global_y_offset+520,800,80),player.rect):
+            player.y_pos = 440
             player.y_velocity = 0
             player.on_ground = True
         else:
@@ -182,7 +183,8 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-
+    if player.y_pos > 700:
+            run = False
  
 
     
