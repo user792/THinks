@@ -89,7 +89,7 @@ class Object:
         self.y_pos = y_pos
         self.width = width
         self.height = height
-        self.tecture = texture
+        self.texture = texture
 #näytön asetuksia
 
 SCREEN_WIDTH = 800
