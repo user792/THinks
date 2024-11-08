@@ -171,7 +171,6 @@ while run:
             player.on_ground = True
         else:
             player.on_ground = False
-    print(player.on_ground,player.can_jump)
     #pelaajan syötteet
     player.movement()
 
