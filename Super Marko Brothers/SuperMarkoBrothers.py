@@ -38,10 +38,18 @@ class Attribute:
             global_x_offset -= self.x_velocity
         if self.x_pos <= 0:
             self.x_pos = 1
-
-    def set_speed(self, new_speed):
-        self.speed = new_speed
+    def camera(self):
+        global global_x_offset
+        global global_y_offset
+        if self.x_pos >= 400:
+            self.x_pos = 399
+            global_x_offset -= self.x_velocity
+        if self.x_pos <= 0:
+            self.x_pos = 1
     def movement(self):
+        global global_x_offset
+        global global_y_offset
+     
          #pelaajan syötteet
         key = pygame.key.get_pressed()
 
@@ -89,7 +97,9 @@ class Object:
         self.y_pos = y_pos
         self.width = width
         self.height = height
-        self.texture = texture
+        self.texture = pygame.transform.scale(texture,(self.width,self.height))
+    def draw(self):
+        screen.blit(self.texture,(global_x_offset+self.x_pos,global_y_offset+self.y_pos))
 #näytön asetuksia
 
 SCREEN_WIDTH = 800
@@ -126,13 +136,7 @@ x_delta = 1.1
 y_delta = 1.1
 
 #level 1
-sand10x = pygame.image.load("materials/sand10x.png").convert_alpha()  
-sand10x = pygame.transform.scale(sand10x,(800,80))
-
-
-
-
-
+sand10x = Object(x_pos=0,y_pos=520,width=800,height=80,texture=pygame.image.load("materials/sand10x.png").convert_alpha())
 
 level1_bg = pygame.image.load('materials/background.png')
 level1_bg = pygame.transform.scale(level1_bg, (8000, 600))
@@ -154,24 +158,12 @@ while run:
 
     #pelaajan fysiikat ja kamera
     player.update_velocity(x_delta,y_delta)
-    if player.x_pos >= 400:
-        player.x_pos = 399
-        global_x_offset -= player.x_velocity
-    if player.x_pos <= 0:
-        player.x_pos = 1
-    
-
-
-    
-
-
-
-
 
     #level 1 jutut
     if level == 1:
+        player.camera()
         screen.blit(level1_bg, (global_x_offset, global_y_offset))
-        screen.blit(sand10x,(global_x_offset,520))
+        sand10x.draw()
         
         if pygame.Rect.colliderect(pygame.rect.Rect(global_x_offset,global_y_offset+520,800,80),player.rect):
             player.y_pos = 440
