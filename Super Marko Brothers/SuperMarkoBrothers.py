@@ -78,7 +78,7 @@ class Attribute:
             else:
                 screen.blit(self.character[5],(self.x_pos,self.y_pos))
         elif (self.jump_time > 0) and (self.can_jump):
-            self.jump_time += self.max_jump
+            self.jump_time += self.max_jump + 100
             screen.blit(self.character[5],(self.x_pos,self.y_pos))   
         #kävely
         elif (key[pygame.K_a] == True) and (key[pygame.K_d] == True):
@@ -132,7 +132,7 @@ frameid = 0
 # asioiden lokaatiot suhteessa kameran 0 kohtaan
 global_x_offset = 0
 
-
+developper_man_mode = False
 #kitka
 x_delta = 1.1
 y_delta = 1.1
@@ -149,7 +149,39 @@ level = 1
 while run:
     #näytön tyhjennys
     screen.fill((0,0,0))
-    
+
+        #level 1 tausta
+    if level == 1:
+        screen.blit(level1_bg, (global_x_offset,0))
+        screen.fill((105,192,186))
+
+    # antaa katsella maailmaa ilman pelaaja hahmoa
+    if developper_man_mode == True:
+        key = pygame.key.get_pressed()
+        if key[pygame.K_d]:
+            global_x_offset -= 100
+        elif key[pygame.K_a]:
+            global_x_offset += 100
+    else:
+        #pelaajan fysiikat ja kamera
+        player.update_velocity(x_delta,y_delta)
+        
+
+
+    #level 1 jutut
+    if level == 1:
+        player.camera()
+       
+        sand10x.draw([(global_x_offset+0,520),(global_x_offset+800,520),(global_x_offset+1840,520),(global_x_offset+2880,520),(global_x_offset+4000,520),(global_x_offset+4800,520),(global_x_offset+7200,520)])
+        
+        if pygame.Rect.colliderect(pygame.rect.Rect(global_x_offset,520,8000,80),player.rect) == True:
+            player.y_pos = 440
+            player.y_velocity = 0
+            player.on_ground = True
+        else:
+            player.on_ground = False
+
+
     #animaation juttuja
     delay += 1
     if delay == 3:
@@ -158,25 +190,21 @@ while run:
         if frameid >= 4:
             frameid = 0
 
-    #pelaajan fysiikat ja kamera
-    player.update_velocity(x_delta,y_delta)
-
-    #level 1 jutut
-    if level == 1:
-        player.camera()
-        screen.blit(level1_bg, (global_x_offset,0))
-        sand10x.draw([(global_x_offset+0,520),(global_x_offset+70,120)])
-        
-        if pygame.Rect.colliderect(pygame.rect.Rect(global_x_offset,520,800,80),player.rect):
-            player.y_pos = 440
-            player.y_velocity = 0
-            player.on_ground = True
-        else:
-            player.on_ground = False
-    #pelaajan syötteet
-    player.movement()
 
 
+
+
+
+
+
+    #pelaajan syötteet pittää olla alimpana muuten ongelmia eisaa siirtää
+    #pelaajan syötteet pittää olla alimpana muuten ongelmia eisaa siirtää
+    #pelaajan syötteet pittää olla alimpana muuten ongelmia eisaa siirtää
+    #pelaajan syötteet pittää olla alimpana muuten ongelmia eisaa siirtää
+    #pelaajan syötteet pittää olla alimpana muuten ongelmia eisaa siirtää
+    #pelaajan syötteet pittää olla alimpana muuten ongelmia eisaa siirtää
+    if developper_man_mode == False:
+        player.movement()
 
 
     #ikkunan sulkeminen
