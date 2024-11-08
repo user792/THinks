@@ -83,7 +83,13 @@ class Attribute:
             screen.blit(self.character[frameid],(self.x_pos,self.y_pos))
         else:
             screen.blit(self.character[0],(self.x_pos,self.y_pos))
-
+class Object:
+    def __init__(self,x_pos:int,y_pos:int,width:int,height:int,texture):
+        self.x_pos = x_pos
+        self.y_pos = y_pos
+        self.width = width
+        self.height = height
+        self.tecture = texture
 #näytön asetuksia
 
 SCREEN_WIDTH = 800
