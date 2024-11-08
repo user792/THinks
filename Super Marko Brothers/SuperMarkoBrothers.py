@@ -40,7 +40,7 @@ class Attribute:
             self.x_pos = 1
     def camera(self):
         global global_x_offset
-        global global_y_offset
+       
         if self.x_pos >= 400:
             self.x_pos = 399
             global_x_offset -= self.x_velocity
@@ -48,7 +48,7 @@ class Attribute:
             self.x_pos = 1
     def movement(self):
         global global_x_offset
-        global global_y_offset
+        
      
          #pelaajan syötteet
         key = pygame.key.get_pressed()
@@ -92,14 +92,16 @@ class Attribute:
         else:
             screen.blit(self.character[0],(self.x_pos,self.y_pos))
 class Object:
-    def __init__(self,x_pos:int,y_pos:int,width:int,height:int,texture):
-        self.x_pos = x_pos
-        self.y_pos = y_pos
+    def __init__(self,width:int,height:int,texture):
         self.width = width
         self.height = height
         self.texture = pygame.transform.scale(texture,(self.width,self.height))
-    def draw(self):
-        screen.blit(self.texture,(global_x_offset+self.x_pos,global_y_offset+self.y_pos))
+    def draw(self,lista):
+        global global_x_offset
+       
+        for location in lista:
+            screen.blit(self.texture,location)
+
 #näytön asetuksia
 
 SCREEN_WIDTH = 800
@@ -129,14 +131,14 @@ frameid = 0
 
 # asioiden lokaatiot suhteessa kameran 0 kohtaan
 global_x_offset = 0
-global_y_offset = 0
+
 
 #kitka
 x_delta = 1.1
 y_delta = 1.1
 
 #level 1
-sand10x = Object(x_pos=0,y_pos=520,width=800,height=80,texture=pygame.image.load("materials/sand10x.png").convert_alpha())
+sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x.png").convert_alpha())
 
 level1_bg = pygame.image.load('materials/background.png')
 level1_bg = pygame.transform.scale(level1_bg, (8000, 600))
@@ -162,10 +164,10 @@ while run:
     #level 1 jutut
     if level == 1:
         player.camera()
-        screen.blit(level1_bg, (global_x_offset, global_y_offset))
-        sand10x.draw()
+        screen.blit(level1_bg, (global_x_offset,0))
+        sand10x.draw([(global_x_offset+0,520),(global_x_offset+70,120)])
         
-        if pygame.Rect.colliderect(pygame.rect.Rect(global_x_offset,global_y_offset+520,800,80),player.rect):
+        if pygame.Rect.colliderect(pygame.rect.Rect(global_x_offset,520,800,80),player.rect):
             player.y_pos = 440
             player.y_velocity = 0
             player.on_ground = True
