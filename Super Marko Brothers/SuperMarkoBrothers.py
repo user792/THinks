@@ -7,6 +7,9 @@ import pygame
 pygame.init()
 is_running = True
 lives = 3
+level = 1
+score = 0
+
 while is_running:
     #pelin elollisten olijoiden attributejen tallennukseen käytettävä classi
     class Attribute:
@@ -23,6 +26,10 @@ while is_running:
             self.jump_time = jump_time
             self.jump = jump
             self.max_jump = max_jump
+
+            self.frameid = 0
+            self.delay = 0
+            self.frame_count = 4
 
         def update_velocity(self, x_delta, y_delta):
             if self.y_velocity > 9:
@@ -42,6 +49,8 @@ while is_running:
                 global_x_offset -= self.x_velocity
             if self.x_pos <= 0:
                 self.x_pos = 1
+            if self.x_pos >= 800:
+                self.x_pos = 799
         def camera(self):
             global global_x_offset
         
@@ -52,7 +61,12 @@ while is_running:
                 self.x_pos = 1
         def movement(self):
             global global_x_offset
-            
+            self.delay += 1
+            if self.delay == 6:
+                self.frameid += 1
+                self.delay = 0
+                if self.frameid >= self.frame_count:
+                    self.frameid = 0
         
             #pelaajan syötteet
             key = pygame.key.get_pressed()
@@ -89,20 +103,23 @@ while is_running:
                 screen.blit(self.character[0],(self.x_pos,self.y_pos))
             elif key[pygame.K_a] == True:
                 self.x_velocity += -self.speed
-                screen.blit(pygame.transform.flip(self.character[frameid],True,False),(self.x_pos,self.y_pos))
+                screen.blit(pygame.transform.flip(self.character[self.frameid],True,False),(self.x_pos,self.y_pos))
             elif key[pygame.K_d] == True:
                 self.x_velocity += self.speed
-                screen.blit(self.character[frameid],(self.x_pos,self.y_pos))
+                screen.blit(self.character[self.frameid],(self.x_pos,self.y_pos))
             else:
                 screen.blit(self.character[0],(self.x_pos,self.y_pos))
+
     class Object:
-        def __init__(self,width:int,height:int,texture):
+        def __init__(self,width:int,height:int,texture,loot:str=None):
             self.width = width
             self.height = height
+            self.loot = loot
             self.texture = pygame.transform.scale(texture,(self.width,self.height))
-        def draw(self,lista):
+        def draw(self,lista:list,entities:list=None):
             global global_x_offset
             global touch
+            
             for location in lista:
                 screen.blit(self.texture,location)
                 #osumat palikan päällä
@@ -115,6 +132,9 @@ while is_running:
                 #osumat palikan alla
                 if (location[1] +self.height >= player.y_pos >= location[1] +self.height -20) and (location[0]-80 <= player.x_pos <= location[0]+self.width):
                     player.y_pos = location[1] +self.height
+                    if not self.loot == None:
+                        items.append(Item(type=f"{self.loot}",x_pos=location[0]-global_x_offset,y_pos=location[1]-80))
+                        self.loot = None
 
                 #osumat palikan vasen laita
                 if (location[0] <= player.x_pos+80 <= location[0] +20) and (location[1]+10 <= player.y_pos +80 <= location[1]+self.height+80-10):
@@ -123,17 +143,227 @@ while is_running:
                 #osumat palikan oikea laita
                 if (location[0] + self.width >= player.x_pos >= location[0]-20) and (location[1]+10 <= player.y_pos +80 <= location[1]+self.height+80-10):
                     player.x_pos = location[0] +self.width
-        
 
+            if not entities == None:
+            #npc osumat        
+                for entity in entities:
+                    for location in lista:
+                        #osumat palikan päällä
+                        if (location[1] < entity.y_pos + 80 < location[1] +20) and (location[0]-80 < entity.x_pos + global_x_offset < location[0]+self.width):
+                            entity.y_pos = location[1] - self.height
+                            entity.y_velocity = 0
+
+
+                        #osumat palikan alla
+                        if (location[1] +self.height >= entity.y_pos >= location[1] +self.height -20) and (location[0]-80 <= entity.x_pos + global_x_offset <= location[0]+self.width):
+                            entity.y_pos = location[1] +self.height
+
+                        #osumat palikan vasen laita
+                        if (location[0] <= entity.x_pos + global_x_offset+80 <= location[0] +20) and (location[1]+10 <= entity.y_pos +80 <= location[1]+self.height+80-10):
+                            entity.x_pos = location[0] -80 -global_x_offset
+                            entity.x_velocity = -entity.x_velocity
+                        #osumat palikan oikea laita
+                        if (location[0] + self.width >= entity.x_pos + global_x_offset >= location[0]-20) and (location[1]+10 <= entity.y_pos +80 <= location[1]+self.height+80-10):
+                            entity.x_pos = location[0] +self.width - global_x_offset
+                            entity.x_velocity = -entity.x_velocity
+    class Enemy:
+        def __init__(self, y_velocity:float, x_velocity:float,x_pos:int,y_pos:int, frame_count:int, anim_speed:int, type:str, character:list):
+            self.y_velocity = y_velocity
+            self.x_velocity = x_velocity
+            self.x_pos = x_pos
+            self.y_pos = y_pos
+            self.frameid = 0
+            self.delay = 0
+            self.anim_speed = anim_speed
+            self.frame_count = frame_count
+            self.character = character
+            self.rect = pygame.rect.Rect(self.x_pos+10+global_x_offset,self.y_pos+10,60,60)
+            self.type = type
+            self.flip = False
+        def update(self,y_delta:float):
+            if self.y_velocity > 9:
+                self.y_velocity = 9
+            else:
+                self.y_velocity += y_delta
+            
+            
+            self.x_pos += self.x_velocity
+            self.y_pos += self.y_velocity
+            
+            self.rect = pygame.rect.Rect(self.x_pos+10+global_x_offset,self.y_pos+10,60,60)
+            
+            self.delay += 1
+            if self.delay == self.anim_speed:
+                self.frameid += 1
+                self.delay = 0
+                if self.frameid >= self.frame_count:
+                    self.frameid = 0
+            if self.x_velocity <= 0:
+                screen.blit(pygame.transform.flip(self.character[self.frameid],False,self.flip),(self.x_pos+global_x_offset,self.y_pos))
+            else:
+                screen.blit(pygame.transform.flip(self.character[self.frameid],True,self.flip),(self.x_pos+global_x_offset,self.y_pos))
+            
+    class Item:
+        def __init__(self,type:str,x_pos:int,y_pos:int):
+            self.type = type
+            self.x_pos = x_pos
+            self.y_pos = y_pos
+            self.texture = pygame.transform.scale(pygame.image.load(f'items/{type}.png').convert_alpha(),(80,80))
+            self.rect =pygame.rect.Rect(self.x_pos+global_x_offset,self.y_pos,80,80)
+        
+        def draw(self):
+            screen.blit(self.texture,(self.x_pos+global_x_offset,self.y_pos))
+            self.rect =pygame.rect.Rect(self.x_pos+global_x_offset,self.y_pos,80,80)
+
+
+    def drawer(level:int,entities:list,items:list):
+        global lives
+        global run
+        global current_level_score
+        global win
+        global food
+
+        #items
+        collect = []
+        for item in items:
+            if pygame.Rect.colliderect(item.rect,player.rect):
+                collect.append(item)
+                if item.type == "bucket":
+                    win = True
+                elif item.type == "taco":
+                    food += 1000
+                    lives += 1
+                elif item.type == "sauce":
+                    lives += 1
+        for take in collect:
+            items.remove(take)
+        for item in items:
+            if item.x_pos <= -global_x_offset + 800:
+                item.draw()
                 
-    def drawer(level):
+
+
+
+
+        ded = []
+        # npc kuolemat ja tapot
+        for entity in entities:
+            if entity.y_pos >= 700:
+                ded.append(entity)
+            if entity.type == "doge":
+                if (entity.x_pos + global_x_offset+5 <= player.x_pos+80 <= entity.x_pos +160+ global_x_offset-5) and (entity.y_pos-80-20 <= player.y_pos <= entity.y_pos-80): 
+                    ded.append(entity)
+                    player.y_velocity = player.jump
+                    current_level_score += 100
+                    
+                elif pygame.Rect.colliderect(entity.rect,player.rect):
+                    
+                    lives -= 1
+                    run = False
+            
+            elif entity.type == "car":
+                if (entity.x_pos + global_x_offset+10 <= player.x_pos+80 <= entity.x_pos +160+ global_x_offset-10) and (entity.y_pos-80-20 <= player.y_pos <= entity.y_pos-80): 
+                    player.y_velocity = player.jump
+                    if entity.flip == False:
+                        entity.flip = True
+                        current_level_score += 100
+                        entity.x_velocity = entity.x_velocity *10
+                elif pygame.Rect.colliderect(entity.rect,player.rect):
+                    
+                    lives -= 1
+                    run = False
+            for upsidedown in entities:
+                if (upsidedown.flip == True) and (not upsidedown == entity):
+                    if pygame.Rect.colliderect(entity.rect,upsidedown.rect):
+                        if entity.flip == True:
+                            ded.append(upsidedown)
+                            current_level_score += 100
+                        ded.append(entity)
+                        current_level_score += 100
+            for i in entities:
+                if not i == entity and (not i.flip and not entity.flip):
+                    #osumat olion päältä
+                    if (i.y_pos < entity.y_pos + 80 < i.y_pos +20) and (i.x_pos + global_x_offset-80 < entity.x_pos + global_x_offset < i.x_pos + global_x_offset+80):
+                        entity.y_pos = i.y_pos -80
+                        entity.y_velocity = 0
+                    #osumat olion alla
+                    if (i.y_pos +80 >= entity.y_pos >= i.y_pos +80 -20) and (i.x_pos + global_x_offset-80 <= entity.x_pos + global_x_offset <= i.x_pos + global_x_offset+80):
+                        entity.y_pos = i.y_pos +80
+
+                    #osumat olion vasen laita
+                    if (i.x_pos + global_x_offset <= entity.x_pos + global_x_offset+80 <= i.x_pos + global_x_offset +20) and (i.y_pos+10 <= entity.y_pos +80 <= i.y_pos+80+80-10):
+                        entity.x_pos = i.x_pos -80 
+                        if entity.x_velocity > 0:
+                            entity.x_velocity = -entity.x_velocity
+
+                    #osumat polion oikea laita
+                    if (i.x_pos + global_x_offset + 80 >= entity.x_pos + global_x_offset >= i.x_pos + global_x_offset-20) and (i.y_pos+10 <= entity.y_pos +80 <= i.y_pos+80+80-10):
+                        entity.x_pos = i.x_pos +80
+                        if entity.x_velocity < 0:
+                            entity.x_velocity = -entity.x_velocity
+        for bury in ded:
+            entities.remove(bury)
+        for entity in entities:
+            if entity.x_pos <= -global_x_offset + 1000:
+                entity.update(y_delta)
+
         if level == 1:
             global touch
             touch = False
-            sand10x.draw([(global_x_offset+0,520),(global_x_offset+800,520),(global_x_offset+1840,520),(global_x_offset+2880,520),(global_x_offset+4000,520),(global_x_offset+4800,520),(global_x_offset+7200,520)])
-            sand.draw([(global_x_offset+5920,520),(global_x_offset+6480,520)])
-            brick3x.draw([(global_x_offset+6560,280)])
-            brick.draw([(global_x_offset+6000,280)])
+
+            sand10x.draw([
+                (global_x_offset+0,520),
+                (global_x_offset+800,520),
+                (global_x_offset+1840,520),
+                (global_x_offset+2880,520),
+                (global_x_offset+4000,520),
+                (global_x_offset+4800,520),
+                (global_x_offset+7200,520)
+                ],entities)
+            
+            sand.draw([
+                (global_x_offset+5920,520),
+                (global_x_offset+6480,520)
+                ],entities)
+            
+            brick3x.draw([
+                (global_x_offset+6640,280)
+                ],entities)
+            
+            brick.draw([
+                (global_x_offset+6080,280)
+                ],entities)
+            lootbox.draw([
+                (global_x_offset+360,280)
+            ])
+            if touch == False:
+                player.on_ground = False
+        elif level == 2:
+            touch = False
+
+            sand10x.draw([
+                (global_x_offset+0,520),
+                (global_x_offset+800,520),
+                (global_x_offset+1840,520),
+                (global_x_offset+2880,520),
+                (global_x_offset+4000,520),
+                (global_x_offset+4800,520),
+                (global_x_offset+7200,520)
+                ],entities)
+            
+            sand.draw([
+                (global_x_offset+5920,520),
+                (global_x_offset+6480,520)
+                ],entities)
+            
+            brick3x.draw([
+                (global_x_offset+6640,280)
+                ],entities)
+            
+            brick.draw([
+                (global_x_offset+6080,280)
+                ],entities)
+            
             if touch == False:
                 player.on_ground = False
     #näytön asetuksia
@@ -143,15 +373,32 @@ while is_running:
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     #ikkunan nimi
     pygame.display.set_caption("Super Marko Brothers")
+    #ikkunan kuvake
+    pygame.display.set_icon(pygame.image.load('Smb_ico.png'))
     #pelaajan polo animaatio framejen tuonti
     polo_frames = []
     for i in range(1, 8):
         frame = pygame.image.load(f'Polo/Polo{i}.png').convert_alpha()  
         frame = pygame.transform.scale(frame,(80,80))
         polo_frames.append(frame)
-
-    #pelaajan alustaminen
-    player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =polo_frames,x_pos=0,y_pos=0,can_jump=False,jump_time=0,jump=-10,max_jump=30)
+    #pelaajan polo animaatio framejen tuonti
+    marko_frames = []
+    for i in range(1, 8):
+        frame = pygame.image.load(f'marko/marko{i}.png').convert_alpha()  
+        frame = pygame.transform.scale(frame,(80,80))
+        marko_frames.append(frame)
+    #koiruli framet
+    doge_frames = []
+    for i in range(1, 3):
+        frame = pygame.image.load(f'doge/doge{i}.png').convert_alpha()  
+        frame = pygame.transform.scale(frame,(80,80))
+        doge_frames.append(frame)
+    #auton framet
+    car_frames = []
+    for i in range(1, 7):
+        frame = pygame.image.load(f'car/car{i}.png').convert_alpha()  
+        frame = pygame.transform.scale(frame,(80,80))
+        car_frames.append(frame)
 
     #juttu hyppelyyn
     touch = False
@@ -159,17 +406,16 @@ while is_running:
     #pelin ajamiseen tarvittava muuttuja
     run = True
 
-    #toiston nopeus
+    # voittiko pelaaja
+    win = False
+    #kello tarvitaan kaikeen
     clock = pygame.time.Clock()
-
-    #animaation muuttujia
-    delay = 0
-    frameid = 0
 
     # asioiden lokaatiot suhteessa kameran 0 kohtaan
     global_x_offset = 0
+    # nykyisen tason score
+    current_level_score = 0
 
-    developper_man_mode = False
     #kitka
     x_delta = 1.1
     #putoamis nopeus pixeliä framessa
@@ -178,19 +424,59 @@ while is_running:
     font =pygame.font.Font('freesansbold.ttf', 32)
     fontxl =pygame.font.Font('freesansbold.ttf', 100)
     #level 1
-    sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x.png").convert_alpha())
-    sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand.png").convert_alpha())
-    brick = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha())
-    brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x.png").convert_alpha())
+    if level == 1:
 
-    level1_bg = pygame.image.load('materials/background.png')
-    level1_bg = pygame.transform.scale(level1_bg, (8000, 600))
-    # level counter
-    level = 1
+        #pelaajan alustaminen
+        player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =polo_frames,x_pos=0,y_pos=0,can_jump=False,jump_time=0,jump=-10,max_jump=30)
+
+        sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x.png").convert_alpha())
+        sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand.png").convert_alpha())
+        brick = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha())
+        brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x.png").convert_alpha())
+        lootbox = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha(),loot="taco")
+        #taco = Item()
+        #sauce = Item()
+        
+
+
+        level1_bg = pygame.image.load('materials/background.png')
+        level1_bg = pygame.transform.scale(level1_bg, (8000, 600))
+
+        food = 3000
+        entities = [
+            Enemy(x_pos=700,y_pos=40,x_velocity=-1,y_velocity=0,frame_count=6,anim_speed=6,type="car",character=car_frames),
+            Enemy(x_pos=600,y_pos=40,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge",character=doge_frames)
+            
+                    ]
+        items = [
+            Item(type="bucket",x_pos=7600,y_pos=440)
+        ]
+    elif level == 2:
+
+        #pelaajan alustaminen
+        player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =marko_frames,x_pos=0,y_pos=0,can_jump=False,jump_time=0,jump=-10,max_jump=30)
+
+        sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x.png").convert_alpha())
+        sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand.png").convert_alpha())
+        brick = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha())
+        brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x.png").convert_alpha())
+
+
+        level1_bg = pygame.image.load('materials/background.png')
+        level1_bg = pygame.transform.scale(level1_bg, (8000, 600))
+
+        food = 3000.0
+        entities = [
+            Enemy(x_pos=100,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="doge",character=doge_frames),
+            Enemy(x_pos=200,y_pos=40,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car",character=car_frames)
+                    ]
+    # live counter
+
     if lives == 0:
         run = False
         is_running = False
     while run:
+        food -= 1
         #näytön tyhjennys
         screen.fill((0,0,0))
 
@@ -198,69 +484,55 @@ while is_running:
         if level == 1:
             screen.fill((105,192,186))
             screen.blit(level1_bg, (global_x_offset,0))
-            if global_x_offset  <= -7200:
-
-                screen.blit(font.render('You win :D',False,(0,0,0)),(0,0))
+            if global_x_offset <= -7200:
+                global_x_offset = -7200
+            
+            if win:
+                score += current_level_score
+                level += 1
+                run = False
+                pygame.time.delay(1000)
+        elif level == 2:
+            screen.fill((105,192,186))
+            screen.blit(level1_bg, (global_x_offset,0))
+            if win:
+                score += current_level_score
+                level += 1
+                run = False
+                pygame.time.delay(1000)
         #hud
         screen.blit(font.render("lives",False,(0,0,0)),(650,0))
         screen.blit(font.render(f"{lives}",False,(0,0,0)),(700,50))
-        # antaa katsella maailmaa ilman pelaaja hahmoa
-        if developper_man_mode == True:
-            key = pygame.key.get_pressed()
-            if key[pygame.K_d]:
-                global_x_offset -= 100
-            elif key[pygame.K_a]:
-                global_x_offset += 100
-        else:
-            #pelaajan fysiikat ja kamera
-            player.update_velocity(x_delta,y_delta)
-            
+        screen.blit(font.render("food",False,(0,0,0)),(250,0))
+        screen.blit(font.render(f"{int(food//10)}",False,(0,0,0)),(300,50))
+        screen.blit(font.render("level",False,(0,0,0)),(450,0))
+        screen.blit(font.render(f"{level}",False,(0,0,0)),(500,50))
+        screen.blit(font.render("score",False,(0,0,0)),(50,0))
+        screen.blit(font.render(f"{score+current_level_score}",False,(0,0,0)),(100,50))
+        #pelaajan fysiikat ja kamera
+        player.update_velocity(x_delta,y_delta)
+
         #drawer pirtää ja testaa törmäykset pelaajan kanssa
-        drawer(level)
-        #level 1 jutut
-        if level == 1:
-            player.camera()
+        drawer(level,entities,items)
+        #kameran liikket
         
-            
-
-
-        #animaation juttuja
-        delay += 1
-        if delay == 6:
-            frameid += 1
-            delay = 0
-            if frameid >= 4:
-                frameid = 1
-
-
-
-
-
-
-
+        player.camera()
 
         #pelaajan syötteet pittää olla alimpana muuten ongelmia eisaa siirtää
-        #pelaajan syötteet pittää olla alimpana muuten ongelmia eisaa siirtää
-        #pelaajan syötteet pittää olla alimpana muuten ongelmia eisaa siirtää
-        #pelaajan syötteet pittää olla alimpana muuten ongelmia eisaa siirtää
-        #pelaajan syötteet pittää olla alimpana muuten ongelmia eisaa siirtää
-        #pelaajan syötteet pittää olla alimpana muuten ongelmia eisaa siirtää
-        if developper_man_mode == False:
-            player.movement()
-
+        
+        player.movement()
 
         #ikkunan sulkeminen
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 is_running = False
                 run = False
+        #pelaajan kuolema pudotukseen
         if player.y_pos > 700:
                 lives -= 1
                 run = False
     
-
-        
-        
+ 
         #näytön päyivitys
         pygame.display.update()
 
