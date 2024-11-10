@@ -1,6 +1,6 @@
 #the code goes here
 
-#pygamen tuonti
+#pygamen tuontis
 import pygame
 
 #pygamen initialisaatio
@@ -42,23 +42,29 @@ while is_running:
             self.y_pos += self.y_velocity
             
             self.rect = pygame.rect.Rect(self.x_pos,self.y_pos,80,80)
-            global global_x_offset
+
             
-            if self.x_pos >= 550:
-                self.x_pos = 549
+
+
+        def camera(self):
+            global global_x_offset
+            global global_y_offset
+            
+            if self.x_pos >= 400:
+                self.x_pos = 399
                 global_x_offset -= self.x_velocity
+            if self.y_pos <= 50:
+                self.y_pos = 49
+                global_y_offset -= self.y_velocity
+            if (self.y_pos >= 50) and (not global_y_offset < 1):
+                self.y_pos = 50
+                global_y_offset -= self.y_velocity
+            if global_y_offset <= 0:
+                global_y_offset = 0
             if self.x_pos <= 0:
                 self.x_pos = 1
             if self.x_pos >= 800:
                 self.x_pos = 799
-        def camera(self):
-            global global_x_offset
-        
-            if self.x_pos >= 400:
-                self.x_pos = 399
-                global_x_offset -= self.x_velocity
-            if self.x_pos <= 0:
-                self.x_pos = 1
         def movement(self):
             global global_x_offset
             self.delay += 1
@@ -133,7 +139,7 @@ while is_running:
                 if (location[1] +self.height >= player.y_pos >= location[1] +self.height -20) and (location[0]-80 <= player.x_pos <= location[0]+self.width):
                     player.y_pos = location[1] +self.height
                     if not self.loot == None:
-                        items.append(Item(type=f"{self.loot}",x_pos=location[0]-global_x_offset,y_pos=location[1]-80))
+                        items.append(Item(type=f"{self.loot}",x_pos=location[0]-global_x_offset,y_pos=location[1]-80-global_y_offset))
                         self.loot = None
 
                 #osumat palikan vasen laita
@@ -149,21 +155,21 @@ while is_running:
                 for entity in entities:
                     for location in lista:
                         #osumat palikan päällä
-                        if (location[1] < entity.y_pos + 80 < location[1] +20) and (location[0]-80 < entity.x_pos + global_x_offset < location[0]+self.width):
-                            entity.y_pos = location[1] - self.height
+                        if (location[1] < entity.y_pos + 80+global_y_offset < location[1] +20) and (location[0]-80 < entity.x_pos + global_x_offset < location[0]+self.width):
+                            entity.y_pos = location[1] - self.height -global_y_offset
                             entity.y_velocity = 0
 
 
                         #osumat palikan alla
-                        if (location[1] +self.height >= entity.y_pos >= location[1] +self.height -20) and (location[0]-80 <= entity.x_pos + global_x_offset <= location[0]+self.width):
-                            entity.y_pos = location[1] +self.height
+                        if (location[1] +self.height >= entity.y_pos+global_y_offset >= location[1] +self.height -20) and (location[0]-80 <= entity.x_pos + global_x_offset <= location[0]+self.width):
+                            entity.y_pos = location[1] +self.height -global_y_offset
 
                         #osumat palikan vasen laita
-                        if (location[0] <= entity.x_pos + global_x_offset+80 <= location[0] +20) and (location[1]+10 <= entity.y_pos +80 <= location[1]+self.height+80-10):
+                        if (location[0] <= entity.x_pos + global_x_offset+80 <= location[0] +20) and (location[1]+10 <= entity.y_pos+global_y_offset +80 <= location[1]+self.height+80-10):
                             entity.x_pos = location[0] -80 -global_x_offset
                             entity.x_velocity = -entity.x_velocity
                         #osumat palikan oikea laita
-                        if (location[0] + self.width >= entity.x_pos + global_x_offset >= location[0]-20) and (location[1]+10 <= entity.y_pos +80 <= location[1]+self.height+80-10):
+                        if (location[0] + self.width >= entity.x_pos + global_x_offset >= location[0]-20) and (location[1]+10 <= entity.y_pos+global_y_offset +80 <= location[1]+self.height+80-10):
                             entity.x_pos = location[0] +self.width - global_x_offset
                             entity.x_velocity = -entity.x_velocity
     class Enemy:
@@ -177,7 +183,7 @@ while is_running:
             self.anim_speed = anim_speed
             self.frame_count = frame_count
             self.character = character
-            self.rect = pygame.rect.Rect(self.x_pos+10+global_x_offset,self.y_pos+10,60,60)
+            self.rect = pygame.rect.Rect(self.x_pos+10+global_x_offset,self.y_pos+global_y_offset+10,60,60)
             self.type = type
             self.flip = False
         def update(self,y_delta:float):
@@ -190,7 +196,7 @@ while is_running:
             self.x_pos += self.x_velocity
             self.y_pos += self.y_velocity
             
-            self.rect = pygame.rect.Rect(self.x_pos+10+global_x_offset,self.y_pos+10,60,60)
+            self.rect = pygame.rect.Rect(self.x_pos+10+global_x_offset,self.y_pos+global_y_offset+10,60,60)
             
             self.delay += 1
             if self.delay == self.anim_speed:
@@ -199,9 +205,9 @@ while is_running:
                 if self.frameid >= self.frame_count:
                     self.frameid = 0
             if self.x_velocity <= 0:
-                screen.blit(pygame.transform.flip(self.character[self.frameid],False,self.flip),(self.x_pos+global_x_offset,self.y_pos))
+                screen.blit(pygame.transform.flip(self.character[self.frameid],False,self.flip),(self.x_pos+global_x_offset,self.y_pos+global_y_offset))
             else:
-                screen.blit(pygame.transform.flip(self.character[self.frameid],True,self.flip),(self.x_pos+global_x_offset,self.y_pos))
+                screen.blit(pygame.transform.flip(self.character[self.frameid],True,self.flip),(self.x_pos+global_x_offset,self.y_pos+global_y_offset))
             
     class Item:
         def __init__(self,type:str,x_pos:int,y_pos:int):
@@ -209,11 +215,11 @@ while is_running:
             self.x_pos = x_pos
             self.y_pos = y_pos
             self.texture = pygame.transform.scale(pygame.image.load(f'items/{type}.png').convert_alpha(),(80,80))
-            self.rect =pygame.rect.Rect(self.x_pos+global_x_offset,self.y_pos,80,80)
+            self.rect =pygame.rect.Rect(self.x_pos+global_x_offset,self.y_pos+global_y_offset,80,80)
         
         def draw(self):
-            screen.blit(self.texture,(self.x_pos+global_x_offset,self.y_pos))
-            self.rect =pygame.rect.Rect(self.x_pos+global_x_offset,self.y_pos,80,80)
+            screen.blit(self.texture,(self.x_pos+global_x_offset,self.y_pos+global_y_offset))
+            self.rect =pygame.rect.Rect(self.x_pos+global_x_offset,self.y_pos+global_y_offset,80,80)
 
 
     def drawer(level:int,entities:list,items:list):
@@ -238,7 +244,7 @@ while is_running:
         for take in collect:
             items.remove(take)
         for item in items:
-            if item.x_pos <= -global_x_offset + 800:
+            if (item.x_pos <= -global_x_offset + 800):
                 item.draw()
                 
 
@@ -248,10 +254,10 @@ while is_running:
         ded = []
         # npc kuolemat ja tapot
         for entity in entities:
-            if entity.y_pos >= 700:
-                ded.append(entity)
+            #if entity.y_pos >= 700:
+            #    ded.append(entity)
             if entity.type == "doge":
-                if (entity.x_pos + global_x_offset+5 <= player.x_pos+80 <= entity.x_pos +160+ global_x_offset-5) and (entity.y_pos-80-20 <= player.y_pos <= entity.y_pos-80): 
+                if (entity.x_pos + global_x_offset+5 <= player.x_pos+80 <= entity.x_pos +160+ global_x_offset-5) and (entity.y_pos+global_y_offset-80-20 <= player.y_pos <= entity.y_pos+global_y_offset-80): 
                     ded.append(entity)
                     player.y_velocity = player.jump
                     current_level_score += 100
@@ -262,7 +268,7 @@ while is_running:
                     run = False
             
             elif entity.type == "car":
-                if (entity.x_pos + global_x_offset+10 <= player.x_pos+80 <= entity.x_pos +160+ global_x_offset-10) and (entity.y_pos-80-20 <= player.y_pos <= entity.y_pos-80): 
+                if (entity.x_pos + global_x_offset+10 <= player.x_pos+80 <= entity.x_pos +160+ global_x_offset-10) and (entity.y_pos+global_y_offset-80-20 <= player.y_pos <= entity.y_pos+global_y_offset-80): 
                     player.y_velocity = player.jump
                     if entity.flip == False:
                         entity.flip = True
@@ -283,28 +289,28 @@ while is_running:
             for i in entities:
                 if not i == entity and (not i.flip and not entity.flip):
                     #osumat olion päältä
-                    if (i.y_pos < entity.y_pos + 80 < i.y_pos +20) and (i.x_pos + global_x_offset-80 < entity.x_pos + global_x_offset < i.x_pos + global_x_offset+80):
+                    if (i.y_pos + global_y_offset < entity.y_pos + 80 < i.y_pos + global_y_offset +20) and (i.x_pos + global_x_offset-80 < entity.x_pos + global_x_offset < i.x_pos + global_x_offset+80):
                         entity.y_pos = i.y_pos -80
                         entity.y_velocity = 0
                     #osumat olion alla
-                    if (i.y_pos +80 >= entity.y_pos >= i.y_pos +80 -20) and (i.x_pos + global_x_offset-80 <= entity.x_pos + global_x_offset <= i.x_pos + global_x_offset+80):
+                    if (i.y_pos+ global_y_offset +80 >= entity.y_pos >= i.y_pos+ global_y_offset +80 -20) and (i.x_pos + global_x_offset-80 <= entity.x_pos + global_x_offset <= i.x_pos + global_x_offset+80):
                         entity.y_pos = i.y_pos +80
 
                     #osumat olion vasen laita
-                    if (i.x_pos + global_x_offset <= entity.x_pos + global_x_offset+80 <= i.x_pos + global_x_offset +20) and (i.y_pos+10 <= entity.y_pos +80 <= i.y_pos+80+80-10):
+                    if (i.x_pos+ + global_x_offset <= entity.x_pos + global_x_offset+80 <= i.x_pos + global_x_offset +20) and (i.y_pos+10+global_y_offset <= entity.y_pos +80 <= i.y_pos+80+80-10+global_y_offset):
                         entity.x_pos = i.x_pos -80 
                         if entity.x_velocity > 0:
                             entity.x_velocity = -entity.x_velocity
 
                     #osumat polion oikea laita
-                    if (i.x_pos + global_x_offset + 80 >= entity.x_pos + global_x_offset >= i.x_pos + global_x_offset-20) and (i.y_pos+10 <= entity.y_pos +80 <= i.y_pos+80+80-10):
+                    if (i.x_pos + global_x_offset + 80 >= entity.x_pos + global_x_offset >= i.x_pos + global_x_offset-20) and (i.y_pos+10+global_y_offset <= entity.y_pos +80 <= i.y_pos+80+80-10+global_y_offset):
                         entity.x_pos = i.x_pos +80
                         if entity.x_velocity < 0:
                             entity.x_velocity = -entity.x_velocity
         for bury in ded:
             entities.remove(bury)
         for entity in entities:
-            if entity.x_pos <= -global_x_offset + 1000:
+            if not entity.x_pos >= -global_x_offset + 1000:
                 entity.update(y_delta)
 
         if level == 1:
@@ -312,29 +318,29 @@ while is_running:
             touch = False
 
             sand10x.draw([
-                (global_x_offset+0,520),
-                (global_x_offset+800,520),
-                (global_x_offset+1840,520),
-                (global_x_offset+2880,520),
-                (global_x_offset+4000,520),
-                (global_x_offset+4800,520),
-                (global_x_offset+7200,520)
+                (global_x_offset+0,global_y_offset+520),
+                (global_x_offset+800,global_y_offset+520),
+                (global_x_offset+1840,global_y_offset+520),
+                (global_x_offset+2880,global_y_offset+520),
+                (global_x_offset+4000,global_y_offset+520),
+                (global_x_offset+4800,global_y_offset+520),
+                (global_x_offset+7200,global_y_offset+520)
                 ],entities)
             
             sand.draw([
-                (global_x_offset+5920,520),
-                (global_x_offset+6480,520)
+                (global_x_offset+5920,global_y_offset+520),
+                (global_x_offset+6480,global_y_offset+520)
                 ],entities)
             
             brick3x.draw([
-                (global_x_offset+6640,280)
+                (global_x_offset+6640,global_y_offset+280)
                 ],entities)
             
             brick.draw([
-                (global_x_offset+6080,280)
+                (global_x_offset+6080,global_y_offset+280)
                 ],entities)
-            lootbox.draw([
-                (global_x_offset+360,280)
+            lootbox_taco.draw([
+                (global_x_offset+360,global_y_offset+280)
             ])
             if touch == False:
                 player.on_ground = False
@@ -342,26 +348,26 @@ while is_running:
             touch = False
 
             sand10x.draw([
-                (global_x_offset+0,520),
-                (global_x_offset+800,520),
-                (global_x_offset+1840,520),
-                (global_x_offset+2880,520),
-                (global_x_offset+4000,520),
-                (global_x_offset+4800,520),
-                (global_x_offset+7200,520)
+                (global_x_offset+0,global_y_offset+520),
+                (global_x_offset+800,global_y_offset+520),
+                (global_x_offset+1840,global_y_offset+520),
+                (global_x_offset+2880,global_y_offset+520),
+                (global_x_offset+4000,global_y_offset+520),
+                (global_x_offset+4800,global_y_offset+520),
+                (global_x_offset+7200,global_y_offset+520)
                 ],entities)
             
             sand.draw([
-                (global_x_offset+5920,520),
-                (global_x_offset+6480,520)
+                (global_x_offset+5920,global_y_offset+520),
+                (global_x_offset+6480,global_y_offset+520)
                 ],entities)
             
             brick3x.draw([
-                (global_x_offset+6640,280)
+                (global_x_offset+6640,global_y_offset+280)
                 ],entities)
             
             brick.draw([
-                (global_x_offset+6080,280)
+                (global_x_offset+6080,global_y_offset+280)
                 ],entities)
             
             if touch == False:
@@ -412,7 +418,11 @@ while is_running:
     clock = pygame.time.Clock()
 
     # asioiden lokaatiot suhteessa kameran 0 kohtaan
-    global_x_offset = 0
+    global_x_offset = int(0)
+
+    # asioiden lokaatiot suhteessa kameran 0 kohtaa
+    global_y_offset = int()
+
     # nykyisen tason score
     current_level_score = 0
 
@@ -433,7 +443,7 @@ while is_running:
         sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand.png").convert_alpha())
         brick = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha())
         brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x.png").convert_alpha())
-        lootbox = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha(),loot="taco")
+        lootbox_taco = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha(),loot="taco")
         #taco = Item()
         #sauce = Item()
         
@@ -444,8 +454,8 @@ while is_running:
 
         food = 3000
         entities = [
-            Enemy(x_pos=700,y_pos=40,x_velocity=-1,y_velocity=0,frame_count=6,anim_speed=6,type="car",character=car_frames),
-            Enemy(x_pos=600,y_pos=40,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge",character=doge_frames)
+            Enemy(x_pos=700,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=6,anim_speed=6,type="car",character=car_frames),
+            Enemy(x_pos=600,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge",character=doge_frames)
             
                     ]
         items = [
@@ -483,23 +493,23 @@ while is_running:
             #level 1 tausta
         if level == 1:
             screen.fill((105,192,186))
-            screen.blit(level1_bg, (global_x_offset,0))
+            screen.blit(level1_bg, (global_x_offset,global_y_offset))
             if global_x_offset <= -7200:
                 global_x_offset = -7200
             
-            if win:
-                score += current_level_score
-                level += 1
-                run = False
-                pygame.time.delay(1000)
+
+                
         elif level == 2:
             screen.fill((105,192,186))
-            screen.blit(level1_bg, (global_x_offset,0))
-            if win:
-                score += current_level_score
-                level += 1
-                run = False
-                pygame.time.delay(1000)
+            screen.blit(level1_bg, (global_x_offset,global_y_offset))
+
+
+        if win:    
+            level += 1
+            current_level_score += food//10*10
+            score += current_level_score
+            pygame.time.delay(1000) 
+            run = False
         #hud
         screen.blit(font.render("lives",False,(0,0,0)),(650,0))
         screen.blit(font.render(f"{lives}",False,(0,0,0)),(700,50))
@@ -528,7 +538,7 @@ while is_running:
                 is_running = False
                 run = False
         #pelaajan kuolema pudotukseen
-        if player.y_pos > 700:
+        if (player.y_pos > 700+global_y_offset) or (food < 0):
                 lives -= 1
                 run = False
     
