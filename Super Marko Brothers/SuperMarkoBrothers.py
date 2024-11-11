@@ -364,7 +364,7 @@ while is_running:
             if touch == False:
                 player.on_ground = False
         elif level == 2:
-            touch = False
+          touch = False
 
             sand10x.draw([
                 (global_x_offset+0,global_y_offset+520),
@@ -379,23 +379,35 @@ while is_running:
             sand.draw([
                 (global_x_offset+5920,global_y_offset+520),
                 (global_x_offset+6480,global_y_offset+520)
+                
                 ],entities)
             
             brick3x.draw([
-                (global_x_offset+6640,global_y_offset+280)
+                (global_x_offset+6640,global_y_offset+280),
+                (global_x_offset+7300, global_y_offset-50),
+                (global_x_offset+4600, global_y_offset+280)
+                
                 ],entities)
             
             brick.draw([
-                (global_x_offset+6080,global_y_offset+280)
+                (global_x_offset+6080,global_y_offset+280),
+                (global_x_offset+6980,global_y_offset+100),
+                (global_x_offset+8000, global_y_offset +440),
+                (global_x_offset+8000, global_y_offset+520),
+                (global_x_offset+8000, global_y_offset+360),
+                (global_x_offset+8000, global_y_offset+280),
+                (global_x_offset+7700, global_y_offset+200),
+                (global_x_offset+7780, global_y_offset+200)
+                
                 ],entities)
+            
+            lootbox_taco.draw([
+                (global_x_offset+7100,global_y_offset+280)
+            ])
             lootbox_taco1.draw([
-                (global_x_offset+360,global_y_offset+280),
-                (global_x_offset+360+80,global_y_offset+280)
-            ],entities)
-            lootbox_taco2.draw([
-                (global_x_offset+360,global_y_offset+280),
-                (global_x_offset+360+80,global_y_offset+280)
-            ],entities)
+                (global_x_offset+7620, global_y_offset+200)
+            ])
+
             
             if touch == False:
                 player.on_ground = False
@@ -489,15 +501,15 @@ while is_running:
         ]
     elif level == 2:
 
-        #pelaajan alustaminen
+       #pelaajan alustaminen
         player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =marko_frames,x_pos=0,y_pos=0,can_jump=False,jump_time=0,jump=-10,max_jump=30)
 
         sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x.png").convert_alpha())
         sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand.png").convert_alpha())
         brick = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha())
         brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x.png").convert_alpha())
+        lootbox_taco = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha(),loot="taco")
         lootbox_taco1 = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha(),loot="taco")
-        lootbox_taco2 = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha(),loot="taco")
 
         level1_bg = pygame.image.load('materials/background.png')
         level1_bg = pygame.transform.scale(level1_bg, (8000, 600))
@@ -505,7 +517,13 @@ while is_running:
         food = 3000.0
         entities = [
             Enemy(x_pos=100,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="doge",character=doge_frames),
-            Enemy(x_pos=200,y_pos=40,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car",character=car_frames)
+            Enemy(x_pos=200,y_pos=40,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car",character=car_frames),
+            Enemy(x_pos=7500,y_pos=40,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="doge",character=car_frames)
+                    ]
+        items = [
+            Item(type="bucket",x_pos=7780, y_pos=120),
+            Item(type="taco",x_pos=4680, y_pos=200)
+        ]
                     ]
     # live counter
 
