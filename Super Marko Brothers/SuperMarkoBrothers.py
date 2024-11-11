@@ -5,11 +5,14 @@ import pygame
 
 #pygamen initialisaatio
 pygame.init()
+pygame.mixer.init()
 is_running = True
 lives = 3
 level = 1
 score = 0
-
+pygame.mixer.music.load("sound/background_music.wav")
+pygame.mixer.music.set_volume(0.5)
+pygame.mixer.music.play(-1)
 while is_running:
     #pelin elollisten olijoiden attributejen tallennukseen käytettävä classi
     class Attribute:
@@ -254,8 +257,8 @@ while is_running:
         ded = []
         # npc kuolemat ja tapot
         for entity in entities:
-            #if entity.y_pos >= 700:
-            #    ded.append(entity)
+            if entity.y_pos >= 700:
+                ded.append(entity)
             if entity.type == "doge":
                 if (entity.x_pos + global_x_offset+5 <= player.x_pos+80 <= entity.x_pos +160+ global_x_offset-5) and (entity.y_pos+global_y_offset-80-20 <= player.y_pos <= entity.y_pos+global_y_offset-80): 
                     ded.append(entity)
@@ -444,9 +447,8 @@ while is_running:
         brick = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha())
         brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x.png").convert_alpha())
         lootbox_taco = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha(),loot="taco")
-        #taco = Item()
-        #sauce = Item()
-        
+
+
 
 
         level1_bg = pygame.image.load('materials/background.png')
@@ -502,7 +504,8 @@ while is_running:
         elif level == 2:
             screen.fill((105,192,186))
             screen.blit(level1_bg, (global_x_offset,global_y_offset))
-
+            if global_x_offset <= -7200:
+                global_x_offset = -7200
 
         if win:    
             level += 1
