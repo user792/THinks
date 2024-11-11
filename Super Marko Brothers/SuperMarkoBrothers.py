@@ -550,12 +550,7 @@ while is_running:
             if global_x_offset <= -7200:
                 global_x_offset = -7200
 
-        if win:    
-            level += 1
-            current_level_score += food//10*10
-            score += current_level_score
-            pygame.time.delay(1000) 
-            run = False
+
         #hud
         screen.blit(font.render("lives",False,(0,0,0)),(650,0))
         screen.blit(font.render(f"{lives}",False,(0,0,0)),(700,50))
@@ -577,7 +572,12 @@ while is_running:
         #pelaajan syötteet pittää olla alimpana muuten ongelmia eisaa siirtää
         
         player.movement()
-
+        if win:    
+            level += 1
+            current_level_score += food//10*10
+            score += current_level_score
+            pygame.time.delay(1000) 
+            run = False
         #ikkunan sulkeminen
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
