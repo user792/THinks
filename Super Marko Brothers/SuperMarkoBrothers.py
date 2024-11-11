@@ -528,16 +528,16 @@ while is_running:
        #pelaajan alustaminen
         player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =marko_frames,x_pos=0,y_pos=0,can_jump=False,jump_time=0,jump=-10,max_jump=30)
 
-        sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x.png").convert_alpha())
-        sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand.png").convert_alpha())
-        brick = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha())
-        brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x.png").convert_alpha())
-        lootbox_taco = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha(),loot="taco")
-        lootbox_taco1 = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha(),loot="taco")
-        well = Object(width=160,height=80,texture=pygame.image.load("materials/well.png").convert_alpha())
-        canopy = Object(width=160,height=160,texture=pygame.image.load("materials/canopy.png").convert_alpha(),can_walk_through=True)
+        sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x_night.png").convert_alpha())
+        sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand_night.png").convert_alpha())
+        brick = Object(width=80,height=80,texture=pygame.image.load("materials/brick_night.png").convert_alpha())
+        brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x_night.png").convert_alpha())
+        lootbox_taco = Object(width=80,height=80,texture=pygame.image.load("materials/brick_night.png").convert_alpha(),loot="taco")
+        lootbox_taco1 = Object(width=80,height=80,texture=pygame.image.load("materials/brick_night.png").convert_alpha(),loot="taco")
+        well = Object(width=160,height=80,texture=pygame.image.load("materials/well_night.png").convert_alpha())
+        canopy = Object(width=160,height=160,texture=pygame.image.load("materials/canopy_night.png").convert_alpha(),can_walk_through=True)
 
-        bg = pygame.image.load('materials/background.png')
+        bg = pygame.image.load('materials/background_night.png')
         bg = pygame.transform.scale(bg, (8000, 600))
 
         food = 3000.0
