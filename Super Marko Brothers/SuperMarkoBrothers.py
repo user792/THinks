@@ -78,7 +78,7 @@ while is_running:
                 self.delay = 0
                 if self.frameid >= self.frame_count:
                     self.frameid = 0
-        
+            print((self.x_pos-global_x_offset)//80*80,(self.y_pos-global_y_offset)//80*80+40)
             #pelaajan syötteet
             key = pygame.key.get_pressed()
 
@@ -183,7 +183,7 @@ while is_running:
                                 entity.x_pos = location[0] +self.width - global_x_offset
                                 if entity.x_velocity < 0:
                                     entity.x_velocity = -entity.x_velocity
-                                print("oikea")
+                               
     class Enemy:        
         def __init__(self, y_velocity:float, x_velocity:float,x_pos:int,y_pos:int, frame_count:int, anim_speed:int, type:str, character:list):
             self.y_velocity = y_velocity
@@ -349,6 +349,9 @@ while is_running:
                 ],entities)
             
             brick.draw([
+                (global_x_offset+2480,global_y_offset+440),
+                (global_x_offset+2560,global_y_offset+440),
+                (global_x_offset+2560,global_y_offset+360),
                 (global_x_offset+6080,global_y_offset+280)
                 ],entities)
             lootbox_taco.draw([
@@ -358,11 +361,15 @@ while is_running:
                 (global_x_offset+800,global_y_offset+440),
                 (global_x_offset+1440,global_y_offset+440),
                 (global_x_offset+1440,global_y_offset+360),
-                (global_x_offset+1440,global_y_offset+280)
+                (global_x_offset+1440,global_y_offset+280),
+                (global_x_offset+1840,global_y_offset+440),
+                (global_x_offset+1840,global_y_offset+360),
+                (global_x_offset+1840,global_y_offset+280)
             ],entities)
             canopy.draw([
-            (global_x_offset+800,global_y_offset+280),
-            (global_x_offset+1440,global_y_offset+100)
+                (global_x_offset+800,global_y_offset+280),
+                (global_x_offset+1440,global_y_offset+120),
+                (global_x_offset+1840,global_y_offset+120)
             ],entities)
             if touch == False:
                 player.on_ground = False
@@ -495,9 +502,12 @@ while is_running:
 
         food = 3000
         entities = [
-            Enemy(x_pos=700,y_pos=440,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car",character=car_frames),
-            Enemy(x_pos=600,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge",character=doge_frames)
-            
+            Enemy(x_pos=720,y_pos=440,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car",character=car_frames),
+            Enemy(x_pos=640,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge",character=doge_frames),
+            Enemy(x_pos=800,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge",character=doge_frames),
+            Enemy(x_pos=2000,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge",character=doge_frames),
+            Enemy(x_pos=2080,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge",character=doge_frames),
+            Enemy(x_pos=2160,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge",character=doge_frames),
                     ]
         items = [
             Item(type="bucket",x_pos=7600,y_pos=440)
@@ -521,7 +531,7 @@ while is_running:
         entities = [
             Enemy(x_pos=100,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="doge",character=doge_frames),
             Enemy(x_pos=200,y_pos=40,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car",character=car_frames),
-            Enemy(x_pos=7500,y_pos=40,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="doge",character=car_frames)
+            Enemy(x_pos=7500,y_pos=40,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car",character=car_frames)
                 ]
         items = [
             Item(type="bucket",x_pos=7780, y_pos=120),
