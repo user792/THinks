@@ -364,7 +364,7 @@ while is_running:
             if touch == False:
                 player.on_ground = False
         elif level == 2:
-          touch = False
+           touch = False
 
             sand10x.draw([
                 (global_x_offset+0,global_y_offset+520),
