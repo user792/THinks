@@ -175,12 +175,16 @@ while is_running:
                             #osumat palikan vasen laita
                             if (location[0] <= entity.x_pos + global_x_offset+80 <= location[0] +20) and (location[1]+10 <= entity.y_pos+global_y_offset +80 <= location[1]+self.height+80-10):
                                 entity.x_pos = location[0] -80 -global_x_offset
-                                entity.x_velocity = -entity.x_velocity
+                                if entity.x_velocity > 0:
+                                    entity.x_velocity = -entity.x_velocity
+                                
                             #osumat palikan oikea laita
                             if (location[0] + self.width >= entity.x_pos + global_x_offset >= location[0]-20) and (location[1]+10 <= entity.y_pos+global_y_offset +80 <= location[1]+self.height+80-10):
                                 entity.x_pos = location[0] +self.width - global_x_offset
-                                entity.x_velocity = -entity.x_velocity
-    class Enemy:
+                                if entity.x_velocity < 0:
+                                    entity.x_velocity = -entity.x_velocity
+                                print("oikea")
+    class Enemy:        
         def __init__(self, y_velocity:float, x_velocity:float,x_pos:int,y_pos:int, frame_count:int, anim_speed:int, type:str, character:list):
             self.y_velocity = y_velocity
             self.x_velocity = x_velocity
@@ -348,8 +352,7 @@ while is_running:
                 (global_x_offset+6080,global_y_offset+280)
                 ],entities)
             lootbox_taco.draw([
-                (global_x_offset+360,global_y_offset+280),
-                (global_x_offset+360+80,global_y_offset+280)
+                (global_x_offset+360,global_y_offset+280)
             ],entities)
             well.draw([
                 (global_x_offset+800,global_y_offset+440),
@@ -364,7 +367,7 @@ while is_running:
             if touch == False:
                 player.on_ground = False
         elif level == 2:
-           touch = False
+            touch = False
 
             sand10x.draw([
                 (global_x_offset+0,global_y_offset+520),
@@ -492,7 +495,7 @@ while is_running:
 
         food = 3000
         entities = [
-            Enemy(x_pos=700,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=6,anim_speed=6,type="car",character=car_frames),
+            Enemy(x_pos=700,y_pos=440,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car",character=car_frames),
             Enemy(x_pos=600,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge",character=doge_frames)
             
                     ]
@@ -519,12 +522,11 @@ while is_running:
             Enemy(x_pos=100,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="doge",character=doge_frames),
             Enemy(x_pos=200,y_pos=40,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car",character=car_frames),
             Enemy(x_pos=7500,y_pos=40,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="doge",character=car_frames)
-                    ]
+                ]
         items = [
             Item(type="bucket",x_pos=7780, y_pos=120),
             Item(type="taco",x_pos=4680, y_pos=200)
-        ]
-                    ]
+                ]
     # live counter
 
     if lives == 0:
@@ -547,9 +549,6 @@ while is_running:
         elif level == 2:
             screen.fill((105,192,186))
             screen.blit(level1_bg, (global_x_offset,global_y_offset))
-            if global_x_offset <= -7200:
-                global_x_offset = -7200
-
 
         #hud
         screen.blit(font.render("lives",False,(0,0,0)),(650,0))
