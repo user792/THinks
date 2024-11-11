@@ -13,6 +13,8 @@ score = 0
 pygame.mixer.music.load("sound/background_music.wav")
 pygame.mixer.music.set_volume(0.5)
 pygame.mixer.music.play(-1)
+jump_sound = pygame.mixer.Sound("sound/jump.wav")
+jump_sound.set_volume(0.05)
 while is_running:
     #pelin elollisten olijoiden attributejen tallennukseen käytettävä classi
     class Attribute:
@@ -94,6 +96,7 @@ while is_running:
             if (key[pygame.K_w] == True) and (self.can_jump == True):
                 self.y_velocity = self.jump
                 self.jump_time += 1
+                jump_sound.play()
                 if (key[pygame.K_a] == True) and (key[pygame.K_d] == True):
                     screen.blit(self.character[5],(self.x_pos,self.y_pos))
                 elif key[pygame.K_a] == True:
@@ -120,61 +123,63 @@ while is_running:
                 screen.blit(self.character[0],(self.x_pos,self.y_pos))
 
     class Object:
-        def __init__(self,width:int,height:int,texture,loot:str=None):
+        def __init__(self,width:int,height:int,texture,loot:str=None,can_walk_through=False):
             self.width = width
             self.height = height
             self.loot = loot
             self.texture = pygame.transform.scale(texture,(self.width,self.height))
-        def draw(self,lista:list,entities:list=None):
+            self.can_walk_through = can_walk_through
+        def draw(self,lista:list,entities:list=None,can_walk:bool=None):
             global global_x_offset
             global touch
             
             for location in lista:
                 screen.blit(self.texture,location)
-                #osumat palikan päällä
-                if (location[1] < player.y_pos + 80 < location[1] +20) and (location[0]-80 < player.x_pos < location[0]+self.width):
-                    player.y_pos = location[1] - self.height
-                    player.y_velocity = 0
-                    player.on_ground = True
-                    touch = True
+                if self.can_walk_through == False:
+                    #osumat palikan päällä
+                    if (location[1] < player.y_pos + 80 < location[1] +20) and (location[0]-80+10 < player.x_pos < location[0]+self.width-10):
+                        player.y_pos = location[1] - self.height
+                        player.y_velocity = 0
+                        player.on_ground = True
+                        touch = True
 
-                #osumat palikan alla
-                if (location[1] +self.height >= player.y_pos >= location[1] +self.height -20) and (location[0]-80 <= player.x_pos <= location[0]+self.width):
-                    player.y_pos = location[1] +self.height
-                    if not self.loot == None:
-                        items.append(Item(type=f"{self.loot}",x_pos=location[0]-global_x_offset,y_pos=location[1]-80-global_y_offset))
-                        self.loot = None
+                    #osumat palikan alla
+                    if (location[1] +self.height >= player.y_pos >= location[1] +self.height -20) and (location[0]-80+10 <= player.x_pos <= location[0]+self.width-10):
+                        player.y_pos = location[1] +self.height
+                        if not self.loot == None:
+                            items.append(Item(type=f"{self.loot}",x_pos=location[0]-global_x_offset,y_pos=location[1]-80-global_y_offset))
+                            self.loot = None
 
-                #osumat palikan vasen laita
-                if (location[0] <= player.x_pos+80 <= location[0] +20) and (location[1]+10 <= player.y_pos +80 <= location[1]+self.height+80-10):
-                    player.x_pos = location[0] -80
+                    #osumat palikan vasen laita
+                    if (location[0] <= player.x_pos+80 <= location[0] +20) and (location[1]+10 <= player.y_pos +80 <= location[1]+self.height+80-10):
+                        player.x_pos = location[0] -80
 
-                #osumat palikan oikea laita
-                if (location[0] + self.width >= player.x_pos >= location[0]-20) and (location[1]+10 <= player.y_pos +80 <= location[1]+self.height+80-10):
-                    player.x_pos = location[0] +self.width
+                    #osumat palikan oikea laita
+                    if (location[0] + self.width >= player.x_pos >= location[0]-20) and (location[1]+10 <= player.y_pos +80 <= location[1]+self.height+80-10):
+                        player.x_pos = location[0] +self.width
 
-            if not entities == None:
-            #npc osumat        
-                for entity in entities:
-                    for location in lista:
-                        #osumat palikan päällä
-                        if (location[1] < entity.y_pos + 80+global_y_offset < location[1] +20) and (location[0]-80 < entity.x_pos + global_x_offset < location[0]+self.width):
-                            entity.y_pos = location[1] - self.height -global_y_offset
-                            entity.y_velocity = 0
+                if not entities == None:
+                #npc osumat        
+                    for entity in entities:
+                        for location in lista:
+                            #osumat palikan päällä
+                            if (location[1] < entity.y_pos + 80+global_y_offset < location[1] +20) and (location[0]-80 < entity.x_pos + global_x_offset < location[0]+self.width):
+                                entity.y_pos = location[1] - self.height -global_y_offset
+                                entity.y_velocity = 0
 
 
-                        #osumat palikan alla
-                        if (location[1] +self.height >= entity.y_pos+global_y_offset >= location[1] +self.height -20) and (location[0]-80 <= entity.x_pos + global_x_offset <= location[0]+self.width):
-                            entity.y_pos = location[1] +self.height -global_y_offset
+                            #osumat palikan alla
+                            if (location[1] +self.height >= entity.y_pos+global_y_offset >= location[1] +self.height -20) and (location[0]-80 <= entity.x_pos + global_x_offset <= location[0]+self.width):
+                                entity.y_pos = location[1] +self.height -global_y_offset
 
-                        #osumat palikan vasen laita
-                        if (location[0] <= entity.x_pos + global_x_offset+80 <= location[0] +20) and (location[1]+10 <= entity.y_pos+global_y_offset +80 <= location[1]+self.height+80-10):
-                            entity.x_pos = location[0] -80 -global_x_offset
-                            entity.x_velocity = -entity.x_velocity
-                        #osumat palikan oikea laita
-                        if (location[0] + self.width >= entity.x_pos + global_x_offset >= location[0]-20) and (location[1]+10 <= entity.y_pos+global_y_offset +80 <= location[1]+self.height+80-10):
-                            entity.x_pos = location[0] +self.width - global_x_offset
-                            entity.x_velocity = -entity.x_velocity
+                            #osumat palikan vasen laita
+                            if (location[0] <= entity.x_pos + global_x_offset+80 <= location[0] +20) and (location[1]+10 <= entity.y_pos+global_y_offset +80 <= location[1]+self.height+80-10):
+                                entity.x_pos = location[0] -80 -global_x_offset
+                                entity.x_velocity = -entity.x_velocity
+                            #osumat palikan oikea laita
+                            if (location[0] + self.width >= entity.x_pos + global_x_offset >= location[0]-20) and (location[1]+10 <= entity.y_pos+global_y_offset +80 <= location[1]+self.height+80-10):
+                                entity.x_pos = location[0] +self.width - global_x_offset
+                                entity.x_velocity = -entity.x_velocity
     class Enemy:
         def __init__(self, y_velocity:float, x_velocity:float,x_pos:int,y_pos:int, frame_count:int, anim_speed:int, type:str, character:list):
             self.y_velocity = y_velocity
@@ -343,8 +348,19 @@ while is_running:
                 (global_x_offset+6080,global_y_offset+280)
                 ],entities)
             lootbox_taco.draw([
-                (global_x_offset+360,global_y_offset+280)
-            ])
+                (global_x_offset+360,global_y_offset+280),
+                (global_x_offset+360+80,global_y_offset+280)
+            ],entities)
+            well.draw([
+                (global_x_offset+800,global_y_offset+440),
+                (global_x_offset+1440,global_y_offset+440),
+                (global_x_offset+1440,global_y_offset+360),
+                (global_x_offset+1440,global_y_offset+280)
+            ],entities)
+            canopy.draw([
+            (global_x_offset+800,global_y_offset+280),
+            (global_x_offset+1440,global_y_offset+100)
+            ],entities)
             if touch == False:
                 player.on_ground = False
         elif level == 2:
@@ -372,6 +388,14 @@ while is_running:
             brick.draw([
                 (global_x_offset+6080,global_y_offset+280)
                 ],entities)
+            lootbox_taco1.draw([
+                (global_x_offset+360,global_y_offset+280),
+                (global_x_offset+360+80,global_y_offset+280)
+            ],entities)
+            lootbox_taco2.draw([
+                (global_x_offset+360,global_y_offset+280),
+                (global_x_offset+360+80,global_y_offset+280)
+            ],entities)
             
             if touch == False:
                 player.on_ground = False
@@ -447,8 +471,8 @@ while is_running:
         brick = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha())
         brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x.png").convert_alpha())
         lootbox_taco = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha(),loot="taco")
-
-
+        well = Object(width=160,height=80,texture=pygame.image.load("materials/well.png").convert_alpha())
+        canopy = Object(width=160,height=160,texture=pygame.image.load("materials/canopy.png").convert_alpha(),can_walk_through=True)
 
 
         level1_bg = pygame.image.load('materials/background.png')
@@ -472,7 +496,8 @@ while is_running:
         sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand.png").convert_alpha())
         brick = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha())
         brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x.png").convert_alpha())
-
+        lootbox_taco1 = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha(),loot="taco")
+        lootbox_taco2 = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha(),loot="taco")
 
         level1_bg = pygame.image.load('materials/background.png')
         level1_bg = pygame.transform.scale(level1_bg, (8000, 600))
