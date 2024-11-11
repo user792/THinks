@@ -14,7 +14,7 @@ pygame.mixer.music.load("sound/background_music.wav")
 pygame.mixer.music.set_volume(0.5)
 pygame.mixer.music.play(-1)
 jump_sound = pygame.mixer.Sound("sound/jump.wav")
-jump_sound.set_volume(0.05)
+jump_sound.set_volume(0.01)
 while is_running:
     #pelin elollisten olijoiden attributejen tallennukseen käytettävä classi
     class Attribute:
@@ -79,6 +79,7 @@ while is_running:
                 if self.frameid >= self.frame_count:
                     self.frameid = 0
             print((self.x_pos-global_x_offset)//80*80,(self.y_pos-global_y_offset)//80*80+40)
+            print(len(entities))
             #pelaajan syötteet
             key = pygame.key.get_pressed()
 
@@ -286,6 +287,8 @@ while is_running:
                         entity.flip = True
                         current_level_score += 100
                         entity.x_velocity = entity.x_velocity *10
+                    else:
+                        entity.x_velocity = -entity.x_velocity
                 elif pygame.Rect.colliderect(entity.rect,player.rect):
                     
                     lives -= 1
@@ -330,7 +333,7 @@ while is_running:
             touch = False
 
             sand10x.draw([
-                (global_x_offset+0,global_y_offset+520),
+                (global_x_offset,global_y_offset+520),
                 (global_x_offset+800,global_y_offset+520),
                 (global_x_offset+1840,global_y_offset+520),
                 (global_x_offset+2880,global_y_offset+520),
@@ -742,7 +745,7 @@ while is_running:
         screen.blit(font.render("level",False,(0,0,0)),(450,0))
         screen.blit(font.render(f"{level}",False,(0,0,0)),(500,50))
         screen.blit(font.render("score",False,(0,0,0)),(50,0))
-        screen.blit(font.render(f"{score+current_level_score}",False,(0,0,0)),(100,50))
+        screen.blit(font.render(f"{int(score+current_level_score)}",False,(0,0,0)),(100,50))
         #pelaajan fysiikat ja kamera
         player.update_velocity(x_delta,y_delta)
 
