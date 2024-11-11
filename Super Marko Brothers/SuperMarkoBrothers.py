@@ -364,12 +364,14 @@ while is_running:
                 (global_x_offset+1440,global_y_offset+280),
                 (global_x_offset+1840,global_y_offset+440),
                 (global_x_offset+1840,global_y_offset+360),
-                (global_x_offset+1840,global_y_offset+280)
+                (global_x_offset+1840,global_y_offset+280),
+                (global_x_offset+3520,global_y_offset+440)
             ],entities)
             canopy.draw([
                 (global_x_offset+800,global_y_offset+280),
                 (global_x_offset+1440,global_y_offset+120),
-                (global_x_offset+1840,global_y_offset+120)
+                (global_x_offset+1840,global_y_offset+120),
+                (global_x_offset+3520,global_y_offset+280)
             ],entities)
             if touch == False:
                 player.on_ground = False
@@ -505,8 +507,8 @@ while is_running:
         canopy = Object(width=160,height=160,texture=pygame.image.load("materials/canopy.png").convert_alpha(),can_walk_through=True)
 
 
-        level1_bg = pygame.image.load('materials/background.png')
-        level1_bg = pygame.transform.scale(level1_bg, (8000, 600))
+        bg = pygame.image.load('materials/background.png')
+        bg = pygame.transform.scale(bg, (8000, 600))
 
         food = 3000
         entities = [
@@ -516,6 +518,7 @@ while is_running:
             Enemy(x_pos=2000,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge",character=doge_frames),
             Enemy(x_pos=2080,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge",character=doge_frames),
             Enemy(x_pos=2160,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge",character=doge_frames),
+            Enemy(x_pos=3440,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge",character=doge_frames),
                     ]
         items = [
             Item(type="bucket",x_pos=7600,y_pos=440)
@@ -534,8 +537,8 @@ while is_running:
         well = Object(width=160,height=80,texture=pygame.image.load("materials/well.png").convert_alpha())
         canopy = Object(width=160,height=160,texture=pygame.image.load("materials/canopy.png").convert_alpha(),can_walk_through=True)
 
-        level1_bg = pygame.image.load('materials/background.png')
-        level1_bg = pygame.transform.scale(level1_bg, (8000, 600))
+        bg = pygame.image.load('materials/background.png')
+        bg = pygame.transform.scale(bg, (8000, 600))
 
         food = 3000.0
         entities = [
@@ -564,7 +567,7 @@ while is_running:
             #level 1 tausta
         if level == 1:
             screen.fill((105,192,186))
-            screen.blit(level1_bg, (global_x_offset,global_y_offset))
+            screen.blit(bg, (global_x_offset,global_y_offset))
             if global_x_offset <= -7200:
                 global_x_offset = -7200
             
@@ -572,7 +575,7 @@ while is_running:
                 
         elif level == 2:
             screen.fill((105,192,186))
-            screen.blit(level1_bg, (global_x_offset,global_y_offset))
+            screen.blit(bg, (global_x_offset,global_y_offset))
 
         #hud
         screen.blit(font.render("lives",False,(0,0,0)),(650,0))
