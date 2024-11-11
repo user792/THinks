@@ -388,7 +388,10 @@ while is_running:
             
             sand.draw([
                 (global_x_offset+5920,global_y_offset+520),
-                (global_x_offset+6480,global_y_offset+520)
+                (global_x_offset+6480,global_y_offset+520),
+                (global_x_offset+1600, global_y_offset+480),
+                (global_x_offset+1680, global_y_offset+460),
+                (global_x_offset+1760, global_y_offset+480)
                 
                 ],entities)
             
@@ -418,7 +421,12 @@ while is_running:
                 (global_x_offset+7620, global_y_offset+200)
             ])
 
-            
+            well.draw ([
+                (global_x_offset+2560, global_y_offset+440)
+            ], entities)
+            canopy.draw ([
+                (global_x_offset+2560, global_y_offset+280)
+            ])
             if touch == False:
                 player.on_ground = False
     #näytön asetuksia
@@ -523,6 +531,8 @@ while is_running:
         brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x.png").convert_alpha())
         lootbox_taco = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha(),loot="taco")
         lootbox_taco1 = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha(),loot="taco")
+        well = Object(width=160,height=80,texture=pygame.image.load("materials/well.png").convert_alpha())
+        canopy = Object(width=160,height=160,texture=pygame.image.load("materials/canopy.png").convert_alpha(),can_walk_through=True)
 
         level1_bg = pygame.image.load('materials/background.png')
         level1_bg = pygame.transform.scale(level1_bg, (8000, 600))
@@ -531,7 +541,11 @@ while is_running:
         entities = [
             Enemy(x_pos=100,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="doge",character=doge_frames),
             Enemy(x_pos=200,y_pos=40,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car",character=car_frames),
-            Enemy(x_pos=7500,y_pos=40,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car",character=car_frames)
+            Enemy(x_pos=7500,y_pos=40,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car",character=car_frames),
+            Enemy(x_pos=2400,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="car",character=doge_frames),
+            Enemy(x_pos=4000,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="doge",character=doge_frames),
+            Enemy(x_pos=5000,y_pos=40,x_velocity=-1,y_velocity=0,frame_count=6,anim_speed=6,type="car",character=car_frames),
+
                 ]
         items = [
             Item(type="bucket",x_pos=7780, y_pos=120),
