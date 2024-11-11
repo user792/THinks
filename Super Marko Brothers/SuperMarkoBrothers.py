@@ -78,8 +78,8 @@ while is_running:
                 self.delay = 0
                 if self.frameid >= self.frame_count:
                     self.frameid = 0
-            print((self.x_pos-global_x_offset)//80*80,(self.y_pos-global_y_offset)//80*80+40)
-            print(len(entities))
+            #print((self.x_pos-global_x_offset)//80*80,(self.y_pos-global_y_offset)//80*80+40)
+            #print(len(entities))
             #pelaajan syötteet
             key = pygame.key.get_pressed()
 
