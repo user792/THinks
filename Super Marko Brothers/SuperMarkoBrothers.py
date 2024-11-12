@@ -11,7 +11,7 @@ lives = 3
 level = 1
 score = 0
 pygame.mixer.music.load("sound/background_music.wav")
-pygame.mixer.music.set_volume(0.5)
+pygame.mixer.music.set_volume(1)
 pygame.mixer.music.play(-1)
 jump_sound = pygame.mixer.Sound("sound/jump.wav")
 jump_sound.set_volume(0.01)
@@ -732,8 +732,8 @@ while is_running:
         elif level == 2:
             screen.fill((20,30,44))
             screen.blit(bg, (global_x_offset,global_y_offset))
-            #if global_x_offset <= -7200:
-                #global_x_offset = -7200
+            if global_x_offset <= -7200:
+                global_x_offset = -7200
         elif level == 3:
             screen.fill((159,230,247))
             screen.blit(bg, (global_x_offset,global_y_offset))
@@ -744,17 +744,9 @@ while is_running:
             screen.blit(bg, (global_x_offset,global_y_offset))
             if global_x_offset <= -7200:
                 global_x_offset = -7200
-        screen.blit(test_bg, (global_x_offset,global_y_offset))
+        #screen.blit(test_bg, (global_x_offset,global_y_offset))
 
-        #hud
-        screen.blit(font.render("lives",False,(0,0,0)),(650,0))
-        screen.blit(font.render(f"{lives}",False,(0,0,0)),(700,50))
-        screen.blit(font.render("food",False,(0,0,0)),(250,0))
-        screen.blit(font.render(f"{int(food//10)}",False,(0,0,0)),(300,50))
-        screen.blit(font.render("level",False,(0,0,0)),(450,0))
-        screen.blit(font.render(f"{level}",False,(0,0,0)),(500,50))
-        screen.blit(font.render("score",False,(0,0,0)),(50,0))
-        screen.blit(font.render(f"{int(score+current_level_score)}",False,(0,0,0)),(100,50))
+
         #pelaajan fysiikat ja kamera
         player.update_velocity(x_delta,y_delta)
 
@@ -782,7 +774,15 @@ while is_running:
         if (player.y_pos > 700+global_y_offset) or (food < 0):
                 lives -= 1
                 run = False
-    
+        #hud
+        screen.blit(font.render("lives",False,(0,0,0)),(650,0))
+        screen.blit(font.render(f"{lives}",False,(0,0,0)),(700,50))
+        screen.blit(font.render("food",False,(0,0,0)),(250,0))
+        screen.blit(font.render(f"{int(food//10)}",False,(0,0,0)),(300,50))
+        screen.blit(font.render("level",False,(0,0,0)),(450,0))
+        screen.blit(font.render(f"{level}",False,(0,0,0)),(500,50))
+        screen.blit(font.render("score",False,(0,0,0)),(50,0))
+        screen.blit(font.render(f"{int(score+current_level_score)}",False,(0,0,0)),(100,50))
  
         #näytön päyivitys
         pygame.display.update()
