@@ -402,8 +402,8 @@ while is_running:
             
             brick3x.draw([
                 (global_x_offset+6640,global_y_offset+280),
-                (global_x_offset+7300, global_y_offset-50),
-                (global_x_offset+4600, global_y_offset+280)
+                (global_x_offset+7280, global_y_offset),
+                (global_x_offset+4560, global_y_offset+280)
                 
                 ],entities)
             
@@ -653,7 +653,7 @@ while is_running:
                 ]
         items = [
             Item(type="bucket",x_pos=7780, y_pos=120),
-            Item(type="taco",x_pos=4680, y_pos=200)
+            Item(type="taco",x_pos=4640, y_pos=200)
                 ]
     elif level == 3:
 
