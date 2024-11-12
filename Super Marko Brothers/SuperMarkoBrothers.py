@@ -658,8 +658,8 @@ while is_running:
 
                 ]
         items = [
-            Item(type="bucket",x_pos=7780, y_pos=120),
-            Item(type="taco",x_pos=4680, y_pos=200)
+            Item(type="bucket",x_pos=7760, y_pos=120),
+            Item(type="taco",x_pos=4640, y_pos=200)
                 ]
     elif level == 3:
 
@@ -732,8 +732,8 @@ while is_running:
         elif level == 2:
             screen.fill((20,30,44))
             screen.blit(bg, (global_x_offset,global_y_offset))
-            if global_x_offset <= -7200:
-                global_x_offset = -7200
+            #if global_x_offset <= -7200:
+                #global_x_offset = -7200
         elif level == 3:
             screen.fill((159,230,247))
             screen.blit(bg, (global_x_offset,global_y_offset))
