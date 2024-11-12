@@ -78,11 +78,13 @@ while is_running:
                 self.delay = 0
                 if self.frameid >= self.frame_count:
                     self.frameid = 0
-            #print((self.x_pos-global_x_offset)//80*80,(self.y_pos-global_y_offset)//80*80+40)
-            #print(len(entities))
+            
+
             #pelaajan syötteet
             key = pygame.key.get_pressed()
-
+            #pelaajan paikannus(test)
+            if key[pygame.K_l]:
+                print((self.x_pos-global_x_offset)//80*80,(self.y_pos-global_y_offset)//80*80+40)
             if self.on_ground:
                 self.can_jump = True
                 self.jump_time = 0
@@ -358,7 +360,7 @@ while is_running:
                 (global_x_offset+6080,global_y_offset+280)
                 ],entities)
             lootbox_taco.draw([
-                (global_x_offset+360,global_y_offset+280)
+                (global_x_offset+320,global_y_offset+280)
             ],entities)
             well.draw([
                 (global_x_offset+800,global_y_offset+440),
@@ -394,43 +396,44 @@ while is_running:
             sand.draw([
                 (global_x_offset+5920,global_y_offset+520),
                 (global_x_offset+6480,global_y_offset+520),
-                (global_x_offset+1600, global_y_offset+480),
-                (global_x_offset+1680, global_y_offset+460),
-                (global_x_offset+1760, global_y_offset+480)
+                (global_x_offset+1600,global_y_offset+520),
+                (global_x_offset+1680,global_y_offset+520),
+                (global_x_offset+1760,global_y_offset+520)
                 
                 ],entities)
             
             brick3x.draw([
+                (global_x_offset+1600,global_y_offset+440),
                 (global_x_offset+6640,global_y_offset+280),
-                (global_x_offset+7280, global_y_offset),
-                (global_x_offset+4560, global_y_offset+280)
+                (global_x_offset+7280,global_y_offset+40),
+                (global_x_offset+4560,global_y_offset+280)
                 
                 ],entities)
             
             brick.draw([
                 (global_x_offset+6080,global_y_offset+280),
-                (global_x_offset+6980,global_y_offset+100),
-                (global_x_offset+8000, global_y_offset +440),
-                (global_x_offset+8000, global_y_offset+520),
-                (global_x_offset+8000, global_y_offset+360),
-                (global_x_offset+8000, global_y_offset+280),
-                (global_x_offset+7700, global_y_offset+200),
-                (global_x_offset+7780, global_y_offset+200)
+                (global_x_offset+6960,global_y_offset+120),
+                (global_x_offset+8000,global_y_offset+440),
+                (global_x_offset+8000,global_y_offset+520),
+                (global_x_offset+8000,global_y_offset+360),
+                (global_x_offset+8000,global_y_offset+280),
+                (global_x_offset+7680,global_y_offset+200),
+                (global_x_offset+7760,global_y_offset+200)
                 
                 ],entities)
             
             lootbox_taco.draw([
-                (global_x_offset+7100,global_y_offset+280)
+                (global_x_offset+7040,global_y_offset+280)
             ])
             lootbox_taco1.draw([
-                (global_x_offset+7620, global_y_offset+200)
+                (global_x_offset+7600,global_y_offset+200)
             ])
 
             well.draw ([
-                (global_x_offset+2560, global_y_offset+440)
-            ], entities)
+                (global_x_offset+2560,global_y_offset+440)
+            ],entities)
             canopy.draw ([
-                (global_x_offset+2560, global_y_offset+280)
+                (global_x_offset+2560,global_y_offset+280)
             ])
             if touch == False:
                 player.on_ground = False
@@ -463,7 +466,7 @@ while is_running:
                 (global_x_offset+6080,global_y_offset+280)
                 ],entities)
             lootbox_taco.draw([
-                (global_x_offset+360,global_y_offset+280)
+                (global_x_offset+320,global_y_offset+280)
             ],entities)
             well.draw([
                 (global_x_offset+800,global_y_offset+440),
@@ -512,7 +515,7 @@ while is_running:
                 (global_x_offset+6080,global_y_offset+280)
                 ],entities)
             lootbox_taco.draw([
-                (global_x_offset+360,global_y_offset+280)
+                (global_x_offset+320,global_y_offset+280)
             ],entities)
             well.draw([
                 (global_x_offset+800,global_y_offset+440),
@@ -593,6 +596,8 @@ while is_running:
     #fontti
     font =pygame.font.Font('freesansbold.ttf', 32)
     fontxl =pygame.font.Font('freesansbold.ttf', 100)
+    #testbg
+    test_bg = pygame.transform.scale(pygame.image.load('materials/background_test.png'), (8000, 600))
     #level 1
     if level == 1:
 
@@ -620,6 +625,7 @@ while is_running:
             Enemy(x_pos=2080,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
             Enemy(x_pos=2160,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
             Enemy(x_pos=3440,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
+            Enemy(x_pos=5360,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=6,anim_speed=6,type="car")
                     ]
         items = [
             Item(type="bucket",x_pos=7600,y_pos=440)
@@ -653,7 +659,7 @@ while is_running:
                 ]
         items = [
             Item(type="bucket",x_pos=7780, y_pos=120),
-            Item(type="taco",x_pos=4640, y_pos=200)
+            Item(type="taco",x_pos=4680, y_pos=200)
                 ]
     elif level == 3:
 
@@ -684,12 +690,12 @@ while is_running:
        #pelaajan alustaminen
         player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =marko_frames,x_pos=0,y_pos=0,can_jump=False,jump_time=0,jump=-10,max_jump=30)
 
-        sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x_night.png").convert_alpha())
-        sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand_night.png").convert_alpha())
-        brick = Object(width=80,height=80,texture=pygame.image.load("materials/brick_night.png").convert_alpha())
-        brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x_night.png").convert_alpha())
-        lootbox_taco = Object(width=80,height=80,texture=pygame.image.load("materials/brick_night.png").convert_alpha(),loot="taco")
-        lootbox_taco1 = Object(width=80,height=80,texture=pygame.image.load("materials/brick_night.png").convert_alpha(),loot="taco")
+        sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x_snow_night.png").convert_alpha())
+        sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand_snow_night.png").convert_alpha())
+        brick = Object(width=80,height=80,texture=pygame.image.load("materials/brick_snow_night.png").convert_alpha())
+        brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x_snow_night.png").convert_alpha())
+        lootbox_taco = Object(width=80,height=80,texture=pygame.image.load("materials/brick_snow_night.png").convert_alpha(),loot="taco")
+        lootbox_taco1 = Object(width=80,height=80,texture=pygame.image.load("materials/brick_snow_night.png").convert_alpha(),loot="taco")
         well = Object(width=160,height=80,texture=pygame.image.load("materials/well_night.png").convert_alpha())
         canopy = Object(width=160,height=160,texture=pygame.image.load("materials/canopy_snow_night.png").convert_alpha(),can_walk_through=True)
 
@@ -726,6 +732,8 @@ while is_running:
         elif level == 2:
             screen.fill((20,30,44))
             screen.blit(bg, (global_x_offset,global_y_offset))
+            if global_x_offset <= -7200:
+                global_x_offset = -7200
         elif level == 3:
             screen.fill((159,230,247))
             screen.blit(bg, (global_x_offset,global_y_offset))
@@ -736,6 +744,7 @@ while is_running:
             screen.blit(bg, (global_x_offset,global_y_offset))
             if global_x_offset <= -7200:
                 global_x_offset = -7200
+        screen.blit(test_bg, (global_x_offset,global_y_offset))
 
         #hud
         screen.blit(font.render("lives",False,(0,0,0)),(650,0))
@@ -762,7 +771,7 @@ while is_running:
             level += 1
             current_level_score += food//10*10
             score += current_level_score
-            pygame.time.delay(1000) 
+
             run = False
         #ikkunan sulkeminen
         for event in pygame.event.get():
