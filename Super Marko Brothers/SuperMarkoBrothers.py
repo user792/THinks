@@ -618,7 +618,7 @@ while is_running:
     if lives <= 0:
         run = False
         is_running = False
-        score += current_level_score
+        score = int(current_level_score+score)
     else:
         #juttu hyppelyyn
         touch = False
@@ -683,7 +683,10 @@ while is_running:
                 Item(type="bucket",x_pos=7600,y_pos=440)
             ]
         elif level == 2:
-
+            #musiikki
+            pygame.mixer.music.load("sound/background_music_night.wav")
+            pygame.mixer.music.set_volume(1)
+            pygame.mixer.music.play(-1)
             #pelaajan alustaminen
             player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =marko_frames,x_pos=0,y_pos=0,can_jump=False,jump_time=0,jump=-10,max_jump=30)
 
@@ -714,7 +717,10 @@ while is_running:
                 Item(type="taco",x_pos=4640, y_pos=200)
                     ]
         elif level == 3:
-
+            #musiikki
+            pygame.mixer.music.load("sound/background_music.wav")
+            pygame.mixer.music.set_volume(1)
+            pygame.mixer.music.play(-1)
             #pelaajan alustaminen
             player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =polo_frames,x_pos=0,y_pos=0,can_jump=False,jump_time=0,jump=-10,max_jump=30)
 
@@ -749,7 +755,10 @@ while is_running:
                 Item(type="taco",x_pos=4160,y_pos=-200)
                     ]
         elif level == 4:
-
+            #musiikki
+            pygame.mixer.music.load("sound/background_music_night.wav")
+            pygame.mixer.music.set_volume(1)
+            pygame.mixer.music.play(-1)
             #pelaajan alustaminen
             player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =marko_frames,x_pos=0,y_pos=440,can_jump=False,jump_time=0,jump=-10,max_jump=30)
 
@@ -856,6 +865,10 @@ while is_running:
         #suorituksen nopeus
         clock.tick(60)
 if lives == 0:
+    #musiikki
+    pygame.mixer.music.load("sound/background_music_best.wav")
+    pygame.mixer.music.set_volume(1)
+    pygame.mixer.music.play(-1)
     screen.fill((0,0,0))
     screen.blit(fontxl.render('GAME OVER',False,(255,255,255)),(80,250))
     pygame.display.update()
