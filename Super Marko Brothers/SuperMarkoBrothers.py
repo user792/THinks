@@ -508,46 +508,65 @@ while is_running:
             sand10x.draw([
                 (global_x_offset+0,global_y_offset+520),
                 (global_x_offset+800,global_y_offset+520),
-                (global_x_offset+1840,global_y_offset+520),
-                (global_x_offset+2880,global_y_offset+520),
                 (global_x_offset+4000,global_y_offset+520),
                 (global_x_offset+4800,global_y_offset+520),
-                (global_x_offset+7200,global_y_offset+520)
+                (global_x_offset+5600,global_y_offset+520),
+                (global_x_offset+7200,global_y_offset+520),
+                
                 ],entities)
             
             sand.draw([
-                (global_x_offset+5920,global_y_offset+520),
-                (global_x_offset+6480,global_y_offset+520)
+
+                (global_x_offset+1920,global_y_offset+520),
+                (global_x_offset+2000,global_y_offset+520),
+                (global_x_offset+2080,global_y_offset+520),
+                (global_x_offset+2160,global_y_offset+520),
+                (global_x_offset+2240,global_y_offset+520),
+                (global_x_offset+3220,global_y_offset+520),
+                (global_x_offset+3300,global_y_offset+520),
+                (global_x_offset+3380,global_y_offset+520),
+                (global_x_offset+3460,global_y_offset+520),
+                (global_x_offset+3780,global_y_offset+520),
+                (global_x_offset+6400,global_y_offset+520),
+                (global_x_offset+6480,global_y_offset+520),
+                (global_x_offset+7120,global_y_offset+520),
                 ],entities)
             
             brick3x.draw([
-                (global_x_offset+6640,global_y_offset+280)
+                (global_x_offset+2560,global_y_offset+320),
+                (global_x_offset+6640,global_y_offset+280),
+                (global_x_offset+7520,global_y_offset+40),
                 ],entities)
             
             brick.draw([
-                (global_x_offset+2480,global_y_offset+440),
-                (global_x_offset+2560,global_y_offset+440),
-                (global_x_offset+2560,global_y_offset+360),
-                (global_x_offset+6080,global_y_offset+280)
+                (global_x_offset+1520,global_y_offset+280),
+                (global_x_offset+6080,global_y_offset+280),
+                (global_x_offset+7280,global_y_offset+280),
                 ],entities)
+            
             lootbox_taco.draw([
-                (global_x_offset+320,global_y_offset+280)
+                (global_x_offset+3620,global_y_offset+280),
             ],entities)
+            
             well.draw([
-                (global_x_offset+800,global_y_offset+440),
-                (global_x_offset+1440,global_y_offset+440),
-                (global_x_offset+1440,global_y_offset+360),
-                (global_x_offset+1440,global_y_offset+280),
-                (global_x_offset+1840,global_y_offset+440),
-                (global_x_offset+1840,global_y_offset+360),
-                (global_x_offset+1840,global_y_offset+280),
-                (global_x_offset+3520,global_y_offset+440)
+                (global_x_offset+1040,global_y_offset+440),
+                (global_x_offset+1040,global_y_offset+360),
+                (global_x_offset+1040,global_y_offset+280),
+                (global_x_offset+2000,global_y_offset+440),
+                (global_x_offset+2000,global_y_offset+360),
+                (global_x_offset+2000,global_y_offset+280),
+                (global_x_offset+6400,global_y_offset+440),
+                (global_x_offset+7120,global_y_offset+440),
+                (global_x_offset+7120,global_y_offset+360),
+                (global_x_offset+7120,global_y_offset+280),
+                (global_x_offset+7120,global_y_offset+200),
             ],entities)
+            
             canopy.draw([
-                (global_x_offset+800,global_y_offset+280),
-                (global_x_offset+1440,global_y_offset+120),
-                (global_x_offset+1840,global_y_offset+120),
-                (global_x_offset+3520,global_y_offset+280)
+                (global_x_offset+1040,global_y_offset+120),
+                (global_x_offset+2000,global_y_offset+120),
+                (global_x_offset+6400,global_y_offset+280),
+                (global_x_offset+7120,global_y_offset+40),
             ],entities)
             if touch == False:
                 player.on_ground = False
@@ -716,11 +735,16 @@ while is_running:
 
             food = 3000.0
             entities = [
-
-                    ]
-            items = [
-                Item(type="bucket",x_pos=7600,y_pos=440)
-                    ]
+            Enemy(x_pos=400,y_pos=400,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
+            Enemy(x_pos=880,y_pos=400,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
+            Enemy(x_pos=1520,y_pos=400,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
+            Enemy(x_pos=4640,y_pos=400,x_velocity=-1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
+            Enemy(x_pos=4800,y_pos=400,x_velocity=-1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
+            Enemy(x_pos=7760,y_pos=400,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
+                ]
+        items = [
+            Item(type="bucket",x_pos=7600,y_pos=-40)
+                ]
         
 
     while run:
