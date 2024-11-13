@@ -436,6 +436,7 @@ while is_running:
                 (global_x_offset+7680,global_y_offset+200),
                 (global_x_offset+7760,global_y_offset+200),
                 (global_x_offset+7520,global_y_offset+280)
+                
                 ],entities)
             
             lootbox_taco.draw([
@@ -460,45 +461,64 @@ while is_running:
                 (global_x_offset+0,global_y_offset+520),
                 (global_x_offset+800,global_y_offset+520),
                 (global_x_offset+1840,global_y_offset+520),
-                (global_x_offset+2880,global_y_offset+520),
+                
                 (global_x_offset+4000,global_y_offset+520),
                 (global_x_offset+4800,global_y_offset+520),
                 (global_x_offset+7200,global_y_offset+520)
                 ],entities)
             
             sand.draw([
+                (global_x_offset+1760,global_y_offset+520),
+                (global_x_offset+5520,global_y_offset+440),
                 (global_x_offset+5920,global_y_offset+520),
+                (global_x_offset+6160,global_y_offset+520),
                 (global_x_offset+6480,global_y_offset+520)
                 ],entities)
             
             brick3x.draw([
+                (global_x_offset+1120, global_y_offset+280),
+                (global_x_offset+2800,global_y_offset+520),
+                (global_x_offset+4160,global_y_offset+440),
+                (global_x_offset+4160,global_y_offset+280),
+                (global_x_offset+4400,global_y_offset+440),
+                (global_x_offset+4400,global_y_offset+280),
+                (global_x_offset+6240,global_y_offset+280),
                 (global_x_offset+6640,global_y_offset+280)
                 ],entities)
             
             brick.draw([
+                (global_x_offset+1200,global_y_offset+40),
+                (global_x_offset+1360,global_y_offset-80),
                 (global_x_offset+2480,global_y_offset+440),
                 (global_x_offset+2560,global_y_offset+440),
                 (global_x_offset+2560,global_y_offset+360),
-                (global_x_offset+6080,global_y_offset+280)
+                (global_x_offset+2920,global_y_offset+200),
+                (global_x_offset+3520,global_y_offset+520),
+                (global_x_offset+3600,global_y_offset+520),
+                (global_x_offset+4160,global_y_offset+200),
+                (global_x_offset+4160,global_y_offset+120),
+                (global_x_offset+5920,global_y_offset+280),
+                (global_x_offset+6000,global_y_offset+280)
                 ],entities)
             lootbox_taco.draw([
-                (global_x_offset+320,global_y_offset+280)
+                (global_x_offset+1280,global_y_offset+280)
             ],entities)
             well.draw([
                 (global_x_offset+800,global_y_offset+440),
-                (global_x_offset+1440,global_y_offset+440),
-                (global_x_offset+1440,global_y_offset+360),
-                (global_x_offset+1440,global_y_offset+280),
                 (global_x_offset+1840,global_y_offset+440),
                 (global_x_offset+1840,global_y_offset+360),
                 (global_x_offset+1840,global_y_offset+280),
-                (global_x_offset+3520,global_y_offset+440)
+                (global_x_offset+1840,global_y_offset+200),
+                (global_x_offset+3520,global_y_offset+440),
+                (global_x_offset+4320,global_y_offset+200)
+            
             ],entities)
             canopy.draw([
                 (global_x_offset+800,global_y_offset+280),
-                (global_x_offset+1440,global_y_offset+120),
-                (global_x_offset+1840,global_y_offset+120),
-                (global_x_offset+3520,global_y_offset+280)
+                
+                (global_x_offset+1840,global_y_offset+40),
+                (global_x_offset+3520,global_y_offset+280),
+                (global_x_offset+4320,global_y_offset+40)
             ],entities)
             if touch == False:
                 player.on_ground = False
@@ -663,59 +683,70 @@ while is_running:
             ]
         elif level == 2:
 
-        #pelaajan alustaminen
-            player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =marko_frames,x_pos=0,y_pos=440,can_jump=False,jump_time=0,jump=-10,max_jump=30)
+       #pelaajan alustaminen
+        player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =marko_frames,x_pos=0,y_pos=0,can_jump=False,jump_time=0,jump=-10,max_jump=30)
 
-            sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x_night.png").convert_alpha())
-            sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand_night.png").convert_alpha())
-            brick = Object(width=80,height=80,texture=pygame.image.load("materials/brick_night.png").convert_alpha())
-            brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x_night.png").convert_alpha())
-            lootbox_taco = Object(width=80,height=80,texture=pygame.image.load("materials/brick_night.png").convert_alpha(),loot="taco")
-            lootbox_taco1 = Object(width=80,height=80,texture=pygame.image.load("materials/brick_night.png").convert_alpha(),loot="taco")
-            well = Object(width=160,height=80,texture=pygame.image.load("materials/well_night.png").convert_alpha())
-            canopy = Object(width=160,height=160,texture=pygame.image.load("materials/canopy_night.png").convert_alpha(),can_walk_through=True)
+        sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x_night.png").convert_alpha())
+        sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand_night.png").convert_alpha())
+        brick = Object(width=80,height=80,texture=pygame.image.load("materials/brick_night.png").convert_alpha())
+        brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x_night.png").convert_alpha())
+        lootbox_taco = Object(width=80,height=80,texture=pygame.image.load("materials/brick_night.png").convert_alpha(),loot="taco")
+        lootbox_taco1 = Object(width=80,height=80,texture=pygame.image.load("materials/brick_night.png").convert_alpha(),loot="taco")
+        well = Object(width=160,height=80,texture=pygame.image.load("materials/well_night.png").convert_alpha())
+        canopy = Object(width=160,height=160,texture=pygame.image.load("materials/canopy_night.png").convert_alpha(),can_walk_through=True)
 
-            bg = pygame.image.load('materials/background_night.png')
-            bg = pygame.transform.scale(bg, (8000, 600))
+        bg = pygame.image.load('materials/background_night.png')
+        bg = pygame.transform.scale(bg, (8000, 600))
 
-            food = 3000.0
-            entities = [
-                Enemy(x_pos=100,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
-                Enemy(x_pos=200,y_pos=40,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
-                Enemy(x_pos=7500,y_pos=400,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
-                Enemy(x_pos=2400,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="car"),
-                Enemy(x_pos=4000,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
-                Enemy(x_pos=5000,y_pos=40,x_velocity=-1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
+        food = 3000.0
+        entities = [
+            Enemy(x_pos=100,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
+            Enemy(x_pos=200,y_pos=40,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
+            Enemy(x_pos=7500,y_pos=400,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
+            Enemy(x_pos=2400,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="car"),
+            Enemy(x_pos=4000,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
+            Enemy(x_pos=5000,y_pos=40,x_velocity=-1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
 
-                    ]
-            items = [
-                Item(type="bucket",x_pos=7360, y_pos=-40),
-                Item(type="taco",x_pos=4640, y_pos=200)
-                    ]
+                ]
+        items = [
+            Item(type="bucket",x_pos=7360, y_pos=-40),
+            Item(type="taco",x_pos=4640, y_pos=200)
+                ]
         elif level == 3:
 
-        #pelaajan alustaminen
-            player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =polo_frames,x_pos=0,y_pos=440,can_jump=False,jump_time=0,jump=-10,max_jump=30)
+       #pelaajan alustaminen
+        player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =polo_frames,x_pos=0,y_pos=0,can_jump=False,jump_time=0,jump=-10,max_jump=30)
 
-            sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x_snow.png").convert_alpha())
-            sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand_snow.png").convert_alpha())
-            brick = Object(width=80,height=80,texture=pygame.image.load("materials/brick_snow.png").convert_alpha())
-            brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x_snow.png").convert_alpha())
-            lootbox_taco = Object(width=80,height=80,texture=pygame.image.load("materials/brick_snow.png").convert_alpha(),loot="taco")
-            lootbox_taco1 = Object(width=80,height=80,texture=pygame.image.load("materials/brick_snow.png").convert_alpha(),loot="taco")
-            well = Object(width=160,height=80,texture=pygame.image.load("materials/well.png").convert_alpha())
-            canopy = Object(width=160,height=160,texture=pygame.image.load("materials/canopy_snow.png").convert_alpha(),can_walk_through=True)
+        sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x_snow.png").convert_alpha())
+        sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand_snow.png").convert_alpha())
+        brick = Object(width=80,height=80,texture=pygame.image.load("materials/brick_snow.png").convert_alpha())
+        brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x_snow.png").convert_alpha())
+        lootbox_taco = Object(width=80,height=80,texture=pygame.image.load("materials/brick_snow.png").convert_alpha(),loot="taco")
+        lootbox_taco1 = Object(width=80,height=80,texture=pygame.image.load("materials/brick_snow.png").convert_alpha(),loot="taco")
+        well = Object(width=160,height=80,texture=pygame.image.load("materials/well.png").convert_alpha())
+        canopy = Object(width=160,height=160,texture=pygame.image.load("materials/canopy_snow.png").convert_alpha(),can_walk_through=True)
 
-            bg = pygame.image.load('materials/background_snow.png')
-            bg = pygame.transform.scale(bg, (8000, 600))
+        bg = pygame.image.load('materials/background_snow.png')
+        bg = pygame.transform.scale(bg, (8000, 600))
 
-            food = 3000.0
-            entities = [
-
-                    ]
-            items = [
-                Item(type="bucket",x_pos=7600,y_pos=440)
-                    ]
+        food = 3000.0
+        entities = [
+            Enemy(x_pos=600,y_pos=400,x_velocity=-2,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
+            Enemy(x_pos=650,y_pos=400,x_velocity=-2,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
+            Enemy(x_pos=700,y_pos=400,x_velocity=-2,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
+            Enemy(x_pos=800,y_pos=400,x_velocity=-2,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
+            Enemy(x_pos=2000,y_pos=400,x_velocity=2,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
+            Enemy(x_pos=4320,y_pos=360,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
+            Enemy(x_pos=4400,y_pos=360,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
+            Enemy(x_pos=4480,y_pos=360,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
+            Enemy(x_pos=4560,y_pos=360,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
+            Enemy(x_pos=6400,y_pos=200,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
+            Enemy(x_pos=6800,y_pos=200,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
+                ]
+        items = [
+            Item(type="bucket",x_pos=7600,y_pos=440),
+            Item(type="taco",x_pos=4160,y_pos=-200)
+                ]
         elif level == 4:
 
         #pelaajan alustaminen
