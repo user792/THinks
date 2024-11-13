@@ -24,9 +24,7 @@ pygame.display.set_icon(pygame.image.load('Smb_ico.png'))
 font =pygame.font.Font('freesansbold.ttf', 32)
 fontxl =pygame.font.Font('freesansbold.ttf', 100)
 
-pygame.mixer.music.load("sound/background_music.wav")
-pygame.mixer.music.set_volume(1)
-pygame.mixer.music.play(-1)
+
 jump_sound = pygame.mixer.Sound("sound/jump.wav")
 jump_sound.set_volume(0.01)
 
@@ -651,7 +649,10 @@ while is_running:
         test_bg = pygame.transform.scale(pygame.image.load('materials/background_test.png'), (8000, 600))
         #level 1
         if level == 1:
-
+            #musiikki
+            pygame.mixer.music.load("sound/background_music.wav")
+            pygame.mixer.music.set_volume(1)
+            pygame.mixer.music.play(-1)
             #pelaajan alustaminen
             player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =polo_frames,x_pos=0,y_pos=440,can_jump=False,jump_time=0,jump=-10,max_jump=30)
 
@@ -826,7 +827,9 @@ while is_running:
             level += 1
             current_level_score += food//10*10
             score += current_level_score
-
+            pygame.mixer.music.load("sound/background_music.wav")
+            pygame.mixer.music.set_volume(1)
+            pygame.mixer.music.play(-1)
             run = False
         #ikkunan sulkeminen
         for event in pygame.event.get():
@@ -896,15 +899,13 @@ if lives == 0:
                         
                         csvreader = csv.reader(file)
                         for indexi,row in enumerate(csvreader):
-                            print(row)
-                            if score > int(row[1]) and not [name,score] in save_this:
-                                save_this.append([name,score])
-                            save_this.append(row)
+                            if len(row)<= 0:
+                                if score > int(row[1]) and not [name,score] in save_this:
+                                    save_this.append([name,score])
+                                save_this.append(row)
                             
                         if not [name,score] in save_this:
                             save_this.append([name,score])
-                        print(save_this)
-
                                 
                     with open("SuperMarkoBrothers.csv", "w", newline='') as file:
                         file.truncate()
