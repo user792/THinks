@@ -411,14 +411,16 @@ while is_running:
                 ],entities)
             
             brick.draw([
+                (global_x_offset+2640, global_y_offset+520),
                 (global_x_offset+6080,global_y_offset+280),
                 (global_x_offset+6960,global_y_offset+120),
-                (global_x_offset+8000,global_y_offset+440),
-                (global_x_offset+8000,global_y_offset+520),
-                (global_x_offset+8000,global_y_offset+360),
-                (global_x_offset+8000,global_y_offset+280),
+                (global_x_offset+7920,global_y_offset+440),
+                (global_x_offset+7920,global_y_offset+520),
+                (global_x_offset+7920,global_y_offset+360),
+                (global_x_offset+7920,global_y_offset+280),
                 (global_x_offset+7680,global_y_offset+200),
-                (global_x_offset+7760,global_y_offset+200)
+                (global_x_offset+7760,global_y_offset+200),
+                (global_x_offset+7520,global_y_offset+280)
                 
                 ],entities)
             
@@ -651,14 +653,14 @@ while is_running:
         entities = [
             Enemy(x_pos=100,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
             Enemy(x_pos=200,y_pos=40,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
-            Enemy(x_pos=7500,y_pos=40,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
+            Enemy(x_pos=7500,y_pos=400,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
             Enemy(x_pos=2400,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="car"),
             Enemy(x_pos=4000,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
             Enemy(x_pos=5000,y_pos=40,x_velocity=-1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
 
                 ]
         items = [
-            Item(type="bucket",x_pos=7760, y_pos=120),
+            Item(type="bucket",x_pos=7360, y_pos=-40),
             Item(type="taco",x_pos=4640, y_pos=200)
                 ]
     elif level == 3:
