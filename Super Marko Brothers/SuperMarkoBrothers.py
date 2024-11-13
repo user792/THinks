@@ -614,7 +614,7 @@ while is_running:
         if level == 1:
 
             #pelaajan alustaminen
-            player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =polo_frames,x_pos=0,y_pos=0,can_jump=False,jump_time=0,jump=-10,max_jump=30)
+            player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =polo_frames,x_pos=0,y_pos=440,can_jump=False,jump_time=0,jump=-10,max_jump=30)
 
             sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x.png").convert_alpha())
             sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand.png").convert_alpha())
@@ -645,7 +645,7 @@ while is_running:
         elif level == 2:
 
         #pelaajan alustaminen
-            player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =marko_frames,x_pos=0,y_pos=0,can_jump=False,jump_time=0,jump=-10,max_jump=30)
+            player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =marko_frames,x_pos=0,y_pos=440,can_jump=False,jump_time=0,jump=-10,max_jump=30)
 
             sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x_night.png").convert_alpha())
             sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand_night.png").convert_alpha())
@@ -676,7 +676,7 @@ while is_running:
         elif level == 3:
 
         #pelaajan alustaminen
-            player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =polo_frames,x_pos=0,y_pos=0,can_jump=False,jump_time=0,jump=-10,max_jump=30)
+            player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =polo_frames,x_pos=0,y_pos=440,can_jump=False,jump_time=0,jump=-10,max_jump=30)
 
             sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x_snow.png").convert_alpha())
             sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand_snow.png").convert_alpha())
@@ -700,7 +700,7 @@ while is_running:
         elif level == 4:
 
         #pelaajan alustaminen
-            player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =marko_frames,x_pos=0,y_pos=0,can_jump=False,jump_time=0,jump=-10,max_jump=30)
+            player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =marko_frames,x_pos=0,y_pos=440,can_jump=False,jump_time=0,jump=-10,max_jump=30)
 
             sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x_snow_night.png").convert_alpha())
             sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand_snow_night.png").convert_alpha())
