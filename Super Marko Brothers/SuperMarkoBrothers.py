@@ -1,7 +1,7 @@
 #the code goes here
 
 #pygamen tuontis
-import pygame
+import pygame, csv
 
 #pygamen initialisaatio
 pygame.init()
@@ -10,11 +10,26 @@ is_running = True
 lives = 3
 level = 1
 score = 0
+
+#näytön asetuksia
+
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+#ikkunan nimi
+pygame.display.set_caption("Super Marko Brothers")
+#ikkunan kuvake
+pygame.display.set_icon(pygame.image.load('Smb_ico.png'))
+#fontti
+font =pygame.font.Font('freesansbold.ttf', 32)
+fontxl =pygame.font.Font('freesansbold.ttf', 100)
+
 pygame.mixer.music.load("sound/background_music.wav")
 pygame.mixer.music.set_volume(1)
 pygame.mixer.music.play(-1)
 jump_sound = pygame.mixer.Sound("sound/jump.wav")
 jump_sound.set_volume(0.01)
+
 while is_running:
     #pelin elollisten olijoiden attributejen tallennukseen käytettävä classi
     class Attribute:
@@ -421,7 +436,6 @@ while is_running:
                 (global_x_offset+7680,global_y_offset+200),
                 (global_x_offset+7760,global_y_offset+200),
                 (global_x_offset+7520,global_y_offset+280)
-                
                 ],entities)
             
             lootbox_taco.draw([
@@ -537,15 +551,7 @@ while is_running:
             ],entities)
             if touch == False:
                 player.on_ground = False
-    #näytön asetuksia
-
-    SCREEN_WIDTH = 800
-    SCREEN_HEIGHT = 600
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    #ikkunan nimi
-    pygame.display.set_caption("Super Marko Brothers")
-    #ikkunan kuvake
-    pygame.display.set_icon(pygame.image.load('Smb_ico.png'))
+   
     #pelaajan polo animaatio framejen tuonti
     polo_frames = []
     for i in range(1, 8):
@@ -570,153 +576,153 @@ while is_running:
         frame = pygame.image.load(f'car/car{i}.png').convert_alpha()  
         frame = pygame.transform.scale(frame,(80,80))
         car_frames.append(frame)
+        # live counter
 
-    #juttu hyppelyyn
-    touch = False
-
-    #pelin ajamiseen tarvittava muuttuja
-    run = True
-
-    # voittiko pelaaja
-    win = False
-    #kello tarvitaan kaikeen
-    clock = pygame.time.Clock()
-
-    # asioiden lokaatiot suhteessa kameran 0 kohtaan
-    global_x_offset = int(0)
-
-    # asioiden lokaatiot suhteessa kameran 0 kohtaa
-    global_y_offset = int()
-
-    # nykyisen tason score
-    current_level_score = 0
-
-    #kitka
-    x_delta = 1.1
-    #putoamis nopeus pixeliä framessa
-    y_delta = 1.1
-    #fontti
-    font =pygame.font.Font('freesansbold.ttf', 32)
-    fontxl =pygame.font.Font('freesansbold.ttf', 100)
-    #testbg
-    test_bg = pygame.transform.scale(pygame.image.load('materials/background_test.png'), (8000, 600))
-    #level 1
-    if level == 1:
-
-        #pelaajan alustaminen
-        player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =polo_frames,x_pos=0,y_pos=0,can_jump=False,jump_time=0,jump=-10,max_jump=30)
-
-        sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x.png").convert_alpha())
-        sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand.png").convert_alpha())
-        brick = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha())
-        brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x.png").convert_alpha())
-        lootbox_taco = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha(),loot="taco")
-        well = Object(width=160,height=80,texture=pygame.image.load("materials/well.png").convert_alpha())
-        canopy = Object(width=160,height=160,texture=pygame.image.load("materials/canopy.png").convert_alpha(),can_walk_through=True)
-
-
-        bg = pygame.image.load('materials/background.png')
-        bg = pygame.transform.scale(bg, (8000, 600))
-
-        food = 3000
-        entities = [
-            Enemy(x_pos=720,y_pos=440,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
-            Enemy(x_pos=640,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
-            Enemy(x_pos=800,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
-            Enemy(x_pos=2000,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
-            Enemy(x_pos=2080,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
-            Enemy(x_pos=2160,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
-            Enemy(x_pos=3440,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
-            Enemy(x_pos=5360,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=6,anim_speed=6,type="car")
-                    ]
-        items = [
-            Item(type="bucket",x_pos=7600,y_pos=440)
-        ]
-    elif level == 2:
-
-       #pelaajan alustaminen
-        player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =marko_frames,x_pos=0,y_pos=0,can_jump=False,jump_time=0,jump=-10,max_jump=30)
-
-        sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x_night.png").convert_alpha())
-        sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand_night.png").convert_alpha())
-        brick = Object(width=80,height=80,texture=pygame.image.load("materials/brick_night.png").convert_alpha())
-        brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x_night.png").convert_alpha())
-        lootbox_taco = Object(width=80,height=80,texture=pygame.image.load("materials/brick_night.png").convert_alpha(),loot="taco")
-        lootbox_taco1 = Object(width=80,height=80,texture=pygame.image.load("materials/brick_night.png").convert_alpha(),loot="taco")
-        well = Object(width=160,height=80,texture=pygame.image.load("materials/well_night.png").convert_alpha())
-        canopy = Object(width=160,height=160,texture=pygame.image.load("materials/canopy_night.png").convert_alpha(),can_walk_through=True)
-
-        bg = pygame.image.load('materials/background_night.png')
-        bg = pygame.transform.scale(bg, (8000, 600))
-
-        food = 3000.0
-        entities = [
-            Enemy(x_pos=100,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
-            Enemy(x_pos=200,y_pos=40,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
-            Enemy(x_pos=7500,y_pos=400,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
-            Enemy(x_pos=2400,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="car"),
-            Enemy(x_pos=4000,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
-            Enemy(x_pos=5000,y_pos=40,x_velocity=-1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
-
-                ]
-        items = [
-            Item(type="bucket",x_pos=7360, y_pos=-40),
-            Item(type="taco",x_pos=4640, y_pos=200)
-                ]
-    elif level == 3:
-
-       #pelaajan alustaminen
-        player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =polo_frames,x_pos=0,y_pos=0,can_jump=False,jump_time=0,jump=-10,max_jump=30)
-
-        sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x_snow.png").convert_alpha())
-        sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand_snow.png").convert_alpha())
-        brick = Object(width=80,height=80,texture=pygame.image.load("materials/brick_snow.png").convert_alpha())
-        brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x_snow.png").convert_alpha())
-        lootbox_taco = Object(width=80,height=80,texture=pygame.image.load("materials/brick_snow.png").convert_alpha(),loot="taco")
-        lootbox_taco1 = Object(width=80,height=80,texture=pygame.image.load("materials/brick_snow.png").convert_alpha(),loot="taco")
-        well = Object(width=160,height=80,texture=pygame.image.load("materials/well.png").convert_alpha())
-        canopy = Object(width=160,height=160,texture=pygame.image.load("materials/canopy_snow.png").convert_alpha(),can_walk_through=True)
-
-        bg = pygame.image.load('materials/background_snow.png')
-        bg = pygame.transform.scale(bg, (8000, 600))
-
-        food = 3000.0
-        entities = [
-
-                ]
-        items = [
-            Item(type="bucket",x_pos=7600,y_pos=440)
-                ]
-    elif level == 4:
-
-       #pelaajan alustaminen
-        player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =marko_frames,x_pos=0,y_pos=0,can_jump=False,jump_time=0,jump=-10,max_jump=30)
-
-        sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x_snow_night.png").convert_alpha())
-        sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand_snow_night.png").convert_alpha())
-        brick = Object(width=80,height=80,texture=pygame.image.load("materials/brick_snow_night.png").convert_alpha())
-        brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x_snow_night.png").convert_alpha())
-        lootbox_taco = Object(width=80,height=80,texture=pygame.image.load("materials/brick_snow_night.png").convert_alpha(),loot="taco")
-        lootbox_taco1 = Object(width=80,height=80,texture=pygame.image.load("materials/brick_snow_night.png").convert_alpha(),loot="taco")
-        well = Object(width=160,height=80,texture=pygame.image.load("materials/well_night.png").convert_alpha())
-        canopy = Object(width=160,height=160,texture=pygame.image.load("materials/canopy_snow_night.png").convert_alpha(),can_walk_through=True)
-
-        bg = pygame.image.load('materials/background_snow_night.png')
-        bg = pygame.transform.scale(bg, (8000, 600))
-
-        food = 3000.0
-        entities = [
-
-                ]
-        items = [
-            Item(type="bucket",x_pos=7600,y_pos=440)
-                ]
-    
-    # live counter
-
-    if lives == 0:
+    if lives <= 0:
         run = False
         is_running = False
+        score += current_level_score
+    else:
+        #juttu hyppelyyn
+        touch = False
+
+        #pelin ajamiseen tarvittava muuttuja
+        run = True
+
+        # voittiko pelaaja
+        win = False
+        #kello tarvitaan kaikeen
+        clock = pygame.time.Clock()
+
+        # asioiden lokaatiot suhteessa kameran 0 kohtaan
+        global_x_offset = int(0)
+
+        # asioiden lokaatiot suhteessa kameran 0 kohtaa
+        global_y_offset = int()
+
+        # nykyisen tason score
+        current_level_score = 0
+
+        #kitka
+        x_delta = 1.1
+        #putoamis nopeus pixeliä framessa
+        y_delta = 1.1
+
+        #testbg
+        test_bg = pygame.transform.scale(pygame.image.load('materials/background_test.png'), (8000, 600))
+        #level 1
+        if level == 1:
+
+            #pelaajan alustaminen
+            player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =polo_frames,x_pos=0,y_pos=0,can_jump=False,jump_time=0,jump=-10,max_jump=30)
+
+            sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x.png").convert_alpha())
+            sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand.png").convert_alpha())
+            brick = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha())
+            brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x.png").convert_alpha())
+            lootbox_taco = Object(width=80,height=80,texture=pygame.image.load("materials/brick.png").convert_alpha(),loot="taco")
+            well = Object(width=160,height=80,texture=pygame.image.load("materials/well.png").convert_alpha())
+            canopy = Object(width=160,height=160,texture=pygame.image.load("materials/canopy.png").convert_alpha(),can_walk_through=True)
+
+
+            bg = pygame.image.load('materials/background.png')
+            bg = pygame.transform.scale(bg, (8000, 600))
+
+            food = 3000
+            entities = [
+                Enemy(x_pos=720,y_pos=440,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
+                Enemy(x_pos=640,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
+                Enemy(x_pos=800,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
+                Enemy(x_pos=2000,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
+                Enemy(x_pos=2080,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
+                Enemy(x_pos=2160,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
+                Enemy(x_pos=3440,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
+                Enemy(x_pos=5360,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=6,anim_speed=6,type="car")
+                        ]
+            items = [
+                Item(type="bucket",x_pos=7600,y_pos=440)
+            ]
+        elif level == 2:
+
+        #pelaajan alustaminen
+            player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =marko_frames,x_pos=0,y_pos=0,can_jump=False,jump_time=0,jump=-10,max_jump=30)
+
+            sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x_night.png").convert_alpha())
+            sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand_night.png").convert_alpha())
+            brick = Object(width=80,height=80,texture=pygame.image.load("materials/brick_night.png").convert_alpha())
+            brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x_night.png").convert_alpha())
+            lootbox_taco = Object(width=80,height=80,texture=pygame.image.load("materials/brick_night.png").convert_alpha(),loot="taco")
+            lootbox_taco1 = Object(width=80,height=80,texture=pygame.image.load("materials/brick_night.png").convert_alpha(),loot="taco")
+            well = Object(width=160,height=80,texture=pygame.image.load("materials/well_night.png").convert_alpha())
+            canopy = Object(width=160,height=160,texture=pygame.image.load("materials/canopy_night.png").convert_alpha(),can_walk_through=True)
+
+            bg = pygame.image.load('materials/background_night.png')
+            bg = pygame.transform.scale(bg, (8000, 600))
+
+            food = 3000.0
+            entities = [
+                Enemy(x_pos=100,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
+                Enemy(x_pos=200,y_pos=40,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
+                Enemy(x_pos=7500,y_pos=400,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
+                Enemy(x_pos=2400,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="car"),
+                Enemy(x_pos=4000,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
+                Enemy(x_pos=5000,y_pos=40,x_velocity=-1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
+
+                    ]
+            items = [
+                Item(type="bucket",x_pos=7360, y_pos=-40),
+                Item(type="taco",x_pos=4640, y_pos=200)
+                    ]
+        elif level == 3:
+
+        #pelaajan alustaminen
+            player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =polo_frames,x_pos=0,y_pos=0,can_jump=False,jump_time=0,jump=-10,max_jump=30)
+
+            sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x_snow.png").convert_alpha())
+            sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand_snow.png").convert_alpha())
+            brick = Object(width=80,height=80,texture=pygame.image.load("materials/brick_snow.png").convert_alpha())
+            brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x_snow.png").convert_alpha())
+            lootbox_taco = Object(width=80,height=80,texture=pygame.image.load("materials/brick_snow.png").convert_alpha(),loot="taco")
+            lootbox_taco1 = Object(width=80,height=80,texture=pygame.image.load("materials/brick_snow.png").convert_alpha(),loot="taco")
+            well = Object(width=160,height=80,texture=pygame.image.load("materials/well.png").convert_alpha())
+            canopy = Object(width=160,height=160,texture=pygame.image.load("materials/canopy_snow.png").convert_alpha(),can_walk_through=True)
+
+            bg = pygame.image.load('materials/background_snow.png')
+            bg = pygame.transform.scale(bg, (8000, 600))
+
+            food = 3000.0
+            entities = [
+
+                    ]
+            items = [
+                Item(type="bucket",x_pos=7600,y_pos=440)
+                    ]
+        elif level == 4:
+
+        #pelaajan alustaminen
+            player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =marko_frames,x_pos=0,y_pos=0,can_jump=False,jump_time=0,jump=-10,max_jump=30)
+
+            sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x_snow_night.png").convert_alpha())
+            sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand_snow_night.png").convert_alpha())
+            brick = Object(width=80,height=80,texture=pygame.image.load("materials/brick_snow_night.png").convert_alpha())
+            brick3x = Object(width=240,height=80,texture=pygame.image.load("materials/brick3x_snow_night.png").convert_alpha())
+            lootbox_taco = Object(width=80,height=80,texture=pygame.image.load("materials/brick_snow_night.png").convert_alpha(),loot="taco")
+            lootbox_taco1 = Object(width=80,height=80,texture=pygame.image.load("materials/brick_snow_night.png").convert_alpha(),loot="taco")
+            well = Object(width=160,height=80,texture=pygame.image.load("materials/well_night.png").convert_alpha())
+            canopy = Object(width=160,height=160,texture=pygame.image.load("materials/canopy_snow_night.png").convert_alpha(),can_walk_through=True)
+
+            bg = pygame.image.load('materials/background_snow_night.png')
+            bg = pygame.transform.scale(bg, (8000, 600))
+
+            food = 3000.0
+            entities = [
+
+                    ]
+            items = [
+                Item(type="bucket",x_pos=7600,y_pos=440)
+                    ]
+        
+
     while run:
         food -= 1
         #näytön tyhjennys
@@ -796,5 +802,126 @@ if lives == 0:
     screen.blit(fontxl.render('GAME OVER',False,(255,255,255)),(80,250))
     pygame.display.update()
     pygame.time.delay(1000)
+    ask = True
+    writing = False
+    yes = False
+    while ask:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                ask = False
+                writing = False
+                yes = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    writing = True
+                    ask = False
+                elif event.key == pygame.K_ESCAPE:
+                    writing = False
+                    ask = False
+                    yes = True
+        screen.fill((0,0,0))
+        screen.blit(font.render('press enter to save score',False,(255,255,255)),(80,250))
+        screen.blit(font.render('press esc to continue without saving',False,(255,255,255)),(80,280))
+        pygame.display.update()
+        clock.tick(60)
+    name = ""
+    while writing: 
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                writing = False
+                yes = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_BACKSPACE:
+                    name = name[:-1]
+                elif event.key == pygame.K_ESCAPE or event.key == pygame.K_RETURN:
+                    writing = False
+                    yes = True
+                    save_this =[]
+                    with open("SuperMarkoBrothers.csv", "r") as file:
+                        
+                        csvreader = csv.reader(file)
+                        for indexi,row in enumerate(csvreader):
+                            print(row)
+                            if score > int(row[1]) and not [name,score] in save_this:
+                                save_this.append([name,score])
+                            save_this.append(row)
+                            
+                        if not [name,score] in save_this:
+                            save_this.append([name,score])
+                        print(save_this)
+
+                                
+                    with open("SuperMarkoBrothers.csv", "w", newline='') as file:
+                        file.truncate()
+                        writer = csv.writer(file)
+                        writer.writerows(save_this) 
+                        
+                elif len(name) < 8 and not event.key == pygame.K_TAB:
+                    name += event.unicode
+        screen.fill((0,0,0))
+        screen.blit(font.render("Enter Your Name Below. max 8 characters.",False,(255,255,255)),(0,0))
+        screen.blit(font.render("(press esc to stop)",False,(255,255,255)),(0,30))
+        screen.blit(fontxl.render(name,False,(255,255,255)),(80,250))
+        pygame.display.update()
+    high_scores = []
+    with open("SuperMarkoBrothers.csv", "r") as file:
+        csvreader = csv.reader(file)
+        for row in csvreader:
+            high_scores.append(row)
+    while len(high_scores) < 12:
+        high_scores.append(["",""])
+    scroll = 0
+    while yes:
+        screen.fill((0,0,0))
+        screen.blit(font.render(f"{1+scroll}",False,(255,255,255)),(0,0))
+        screen.blit(font.render(high_scores[scroll+0][0],False,(255,255,255)),(100,0))
+        screen.blit(font.render(high_scores[scroll+0][1],False,(255,255,255)),(400,0))
+        screen.blit(font.render(f"{2+scroll}",False,(255,255,255)),(0,50))
+        screen.blit(font.render(high_scores[scroll+1][0],False,(255,255,255)),(100,50))
+        screen.blit(font.render(high_scores[scroll+1][1],False,(255,255,255)),(400,50))
+        screen.blit(font.render(f"{3+scroll}",False,(255,255,255)),(0,100))
+        screen.blit(font.render(high_scores[scroll+2][0],False,(255,255,255)),(100,100))
+        screen.blit(font.render(high_scores[scroll+2][1],False,(255,255,255)),(400,100))
+        screen.blit(font.render(f"{4+scroll}",False,(255,255,255)),(0,150))
+        screen.blit(font.render(high_scores[scroll+3][0],False,(255,255,255)),(100,150))
+        screen.blit(font.render(high_scores[scroll+3][1],False,(255,255,255)),(400,150))
+        screen.blit(font.render(f"{5+scroll}",False,(255,255,255)),(0,200))
+        screen.blit(font.render(high_scores[scroll+4][0],False,(255,255,255)),(100,200))
+        screen.blit(font.render(high_scores[scroll+4][1],False,(255,255,255)),(400,200))
+        screen.blit(font.render(f"{6+scroll}",False,(255,255,255)),(0,250))
+        screen.blit(font.render(high_scores[scroll+5][0],False,(255,255,255)),(100,250))
+        screen.blit(font.render(high_scores[scroll+5][1],False,(255,255,255)),(400,250))
+        screen.blit(font.render(f"{7+scroll}",False,(255,255,255)),(0,300))
+        screen.blit(font.render(high_scores[scroll+6][0],False,(255,255,255)),(100,300))
+        screen.blit(font.render(high_scores[scroll+6][1],False,(255,255,255)),(400,300))
+        screen.blit(font.render(f"{8+scroll}",False,(255,255,255)),(0,350))
+        screen.blit(font.render(high_scores[scroll+7][0],False,(255,255,255)),(100,350))
+        screen.blit(font.render(high_scores[scroll+7][1],False,(255,255,255)),(400,350))
+        screen.blit(font.render(f"{9+scroll}",False,(255,255,255)),(0,400))
+        screen.blit(font.render(high_scores[scroll+8][0],False,(255,255,255)),(100,400))
+        screen.blit(font.render(high_scores[scroll+8][1],False,(255,255,255)),(400,400))
+        screen.blit(font.render(f"{10+scroll}",False,(255,255,255)),(0,450))
+        screen.blit(font.render(high_scores[scroll+9][0],False,(255,255,255)),(100,450))
+        screen.blit(font.render(high_scores[scroll+9][1],False,(255,255,255)),(400,450))
+        screen.blit(font.render(f"{11+scroll}",False,(255,255,255)),(0,500))
+        screen.blit(font.render(high_scores[scroll+10][0],False,(255,255,255)),(100,500))
+        screen.blit(font.render(high_scores[scroll+10][1],False,(255,255,255)),(400,500))
+        screen.blit(font.render(f"{12+scroll}",False,(255,255,255)),(0,550))
+        screen.blit(font.render(high_scores[scroll+11][0],False,(255,255,255)),(100,550))
+        screen.blit(font.render(high_scores[scroll+11][1],False,(255,255,255)),(400,550))
+        pygame.display.update()
+        clock.tick(60)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                yes = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_DOWN:
+                    if scroll+12 < len(high_scores):
+                        scroll += 1
+                if event.key == pygame.K_UP:
+                    if scroll > 0:
+                        scroll -= 1
+                if event.key == pygame.K_ESCAPE:
+                    yes = False
 #sulkee pygamen
 pygame.quit()
