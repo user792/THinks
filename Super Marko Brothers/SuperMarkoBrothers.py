@@ -469,7 +469,7 @@ while is_running:
                 ],entities)
             
             sand.draw([
-                (global_x_offset+1760,global_y_offset+520),
+                
                 (global_x_offset+5520,global_y_offset+440),
                 (global_x_offset+5920,global_y_offset+520),
                 (global_x_offset+6160,global_y_offset+520),
