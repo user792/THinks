@@ -70,7 +70,10 @@ while is_running:
             
             if self.x_pos >= 400:
                 self.x_pos = 399
-                global_x_offset -= self.x_velocity
+                if self.x_velocity > 0:
+                    global_x_offset -= self.x_velocity
+                else:
+                    global_x_offset += self.x_velocity
             if self.y_pos <= 50:
                 self.y_pos = 49
                 global_y_offset -= self.y_velocity
