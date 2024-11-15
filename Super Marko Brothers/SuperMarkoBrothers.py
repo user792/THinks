@@ -831,22 +831,22 @@ while is_running:
         
         player.camera()
 
-        #pelaajan syötteet pittää olla alimpana muuten ongelmia eisaa siirtää
-        if player.alive:
-            player.movement()
-        else:
+        #pelaajan syötteet pittää olla alimpana muuten ongelmia eisaa siirtää 
+        player.movement()
+
+        
+        if not player.alive:
             lives -= 1
             run = False
             player.x_velocity = 0
             player.y_velocity = 0
-            pygame.mixer.music.stop()
             if level == 1 or level == 3:
                 pygame.mixer.music.load("sound/deadin1.wav")
             elif level == 2 or level == 4:
                 pygame.mixer.music.load("sound/deadin2.wav")
             pygame.mixer.music.set_volume(1)
             pygame.mixer.music.play(1)
-            for i in range(100):
+            for i in range(120):
                 screen.fill((0,0,0))
                 screen.blit(bg, (global_x_offset,global_y_offset))
                 player.y_pos += player.y_velocity
@@ -865,19 +865,44 @@ while is_running:
             level += 1
             current_level_score += food//10*10
             score += current_level_score
-            pygame.mixer.music.load("sound/background_music.wav")
+            pygame.mixer.music.load("sound/winnin.wav")
             pygame.mixer.music.set_volume(1)
-            pygame.mixer.music.play(-1)
+            pygame.mixer.music.play(1)
             run = False
+            for i in range(120):
+                #ikkunan sulkeminen
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        is_running = False
+                        run = False
+                clock.tick(60)
+
         #ikkunan sulkeminen
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 is_running = False
                 run = False
         #pelaajan kuolema pudotukseen
-        if ((player.y_pos > 700+global_y_offset) and (player.alive)) or (food < 0):
-                lives -= 1
-                run = False
+        if ((player.y_pos > 700+global_y_offset) and (player.alive) or food <= 0):
+            lives -= 1
+            run = False
+            if level == 1 or level == 3:
+                pygame.mixer.music.load("sound/deadin1.wav")
+            elif level == 2 or level == 4:
+                pygame.mixer.music.load("sound/deadin2.wav")
+            pygame.mixer.music.set_volume(1)
+            pygame.mixer.music.play(1)
+            for i in range(120):
+                screen.fill((0,0,0))
+                screen.blit(bg, (global_x_offset,global_y_offset))
+                player.update_velocity(x_delta,y_delta)
+                drawer(level,entities,items)
+                
+                
+                screen.blit(player.character[4],(player.x_pos,player.y_pos))
+                pygame.display.update()
+                clock.tick(60)
+                
         #hud
         screen.blit(font.render("lives",False,(0,0,0)),(650,0))
         screen.blit(font.render(f"{lives}",False,(0,0,0)),(700,50))
