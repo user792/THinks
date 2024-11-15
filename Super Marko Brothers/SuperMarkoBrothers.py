@@ -44,7 +44,7 @@ while is_running:
             self.jump_time = jump_time
             self.jump = jump
             self.max_jump = max_jump
-
+            self.alive = True
             self.frameid = 0
             self.delay = 0
             self.frame_count = 4
@@ -154,28 +154,29 @@ while is_running:
             
             for location in lista:
                 screen.blit(self.texture,location)
-                if self.can_walk_through == False:
-                    #osumat palikan päällä
-                    if (location[1] < player.y_pos + 80 < location[1] +20) and (location[0]-80+10 < player.x_pos < location[0]+self.width-10):
-                        player.y_pos = location[1] - self.height
-                        player.y_velocity = 0
-                        player.on_ground = True
-                        touch = True
+                if player.alive:
+                    if self.can_walk_through == False:
+                        #osumat palikan päällä
+                        if (location[1] < player.y_pos + 80 < location[1] +20) and (location[0]-80+10 < player.x_pos < location[0]+self.width-10):
+                            player.y_pos = location[1] - self.height
+                            player.y_velocity = 0
+                            player.on_ground = True
+                            touch = True
 
-                    #osumat palikan alla
-                    if (location[1] +self.height >= player.y_pos >= location[1] +self.height -20) and (location[0]-80+10 <= player.x_pos <= location[0]+self.width-10):
-                        player.y_pos = location[1] +self.height
-                        if not self.loot == None:
-                            items.append(Item(type=f"{self.loot}",x_pos=location[0]-global_x_offset,y_pos=location[1]-80-global_y_offset))
-                            self.loot = None
+                        #osumat palikan alla
+                        if (location[1] +self.height >= player.y_pos >= location[1] +self.height -20) and (location[0]-80+10 <= player.x_pos <= location[0]+self.width-10):
+                            player.y_pos = location[1] +self.height
+                            if not self.loot == None:
+                                items.append(Item(type=f"{self.loot}",x_pos=location[0]-global_x_offset,y_pos=location[1]-80-global_y_offset))
+                                self.loot = None
 
-                    #osumat palikan vasen laita
-                    if (location[0] <= player.x_pos+80 <= location[0] +20) and (location[1]+10 <= player.y_pos +80 <= location[1]+self.height+80-10):
-                        player.x_pos = location[0] -80
+                        #osumat palikan vasen laita
+                        if (location[0] <= player.x_pos+80 <= location[0] +20) and (location[1]+10 <= player.y_pos +80 <= location[1]+self.height+80-10):
+                            player.x_pos = location[0] -80
 
-                    #osumat palikan oikea laita
-                    if (location[0] + self.width >= player.x_pos >= location[0]-20) and (location[1]+10 <= player.y_pos +80 <= location[1]+self.height+80-10):
-                        player.x_pos = location[0] +self.width
+                        #osumat palikan oikea laita
+                        if (location[0] + self.width >= player.x_pos >= location[0]-20) and (location[1]+10 <= player.y_pos +80 <= location[1]+self.height+80-10):
+                            player.x_pos = location[0] +self.width
 
                 if not entities == None:
                 #npc osumat        
@@ -295,9 +296,7 @@ while is_running:
                     
                 elif pygame.Rect.colliderect(entity.rect,player.rect):
                     
-                    lives -= 1
-                    run = False
-            
+                    player.alive = False            
             elif entity.type == "car":
                 if (entity.x_pos + global_x_offset+10 <= player.x_pos+80 <= entity.x_pos +160+ global_x_offset-10) and (entity.y_pos+global_y_offset-80-20 <= player.y_pos <= entity.y_pos+global_y_offset-80): 
                     player.y_velocity = player.jump
@@ -307,10 +306,8 @@ while is_running:
                         entity.x_velocity = entity.x_velocity *10
                     else:
                         entity.x_velocity = -entity.x_velocity
-                elif pygame.Rect.colliderect(entity.rect,player.rect):
-                    
-                    lives -= 1
-                    run = False
+                elif pygame.Rect.colliderect(entity.rect,player.rect) and player.alive:
+                    player.alive = False
             for upsidedown in entities:
                 if (upsidedown.flip == True) and (not upsidedown == entity):
                     if pygame.Rect.colliderect(entity.rect,upsidedown.rect):
@@ -469,7 +466,6 @@ while is_running:
                 ],entities)
             
             sand.draw([
-                
                 (global_x_offset+5520,global_y_offset+440),
                 (global_x_offset+5920,global_y_offset+520),
                 (global_x_offset+6160,global_y_offset+520),
@@ -720,7 +716,7 @@ while is_running:
                     ]
             items = [
                 Item(type="bucket",x_pos=7360, y_pos=-40),
-                Item(type="sauce",x_pos=4640, y_pos=200)
+                Item(type="taco",x_pos=4640, y_pos=200)
                     ]
         elif level == 3:
             #musiikki
@@ -836,8 +832,35 @@ while is_running:
         player.camera()
 
         #pelaajan syötteet pittää olla alimpana muuten ongelmia eisaa siirtää
-        
-        player.movement()
+        if player.alive:
+            player.movement()
+        else:
+            lives -= 1
+            run = False
+            player.x_velocity = 0
+            player.y_velocity = 0
+            pygame.mixer.music.stop()
+            if level == 1 or level == 3:
+                pygame.mixer.music.load("sound/deadin1.wav")
+            elif level == 2 or level == 4:
+                pygame.mixer.music.load("sound/deadin2.wav")
+            pygame.mixer.music.set_volume(1)
+            pygame.mixer.music.play(1)
+            for i in range(100):
+                screen.fill((0,0,0))
+                screen.blit(bg, (global_x_offset,global_y_offset))
+                player.y_pos += player.y_velocity
+                drawer(level,entities,items)
+                if i < 20:
+                    player.y_velocity = -10
+                else:
+                    player.y_velocity += 1
+                
+                    
+                screen.blit(player.character[6],(player.x_pos,player.y_pos))
+                pygame.display.update()
+                clock.tick(60)
+            
         if win:    
             level += 1
             current_level_score += food//10*10
@@ -852,7 +875,7 @@ while is_running:
                 is_running = False
                 run = False
         #pelaajan kuolema pudotukseen
-        if (player.y_pos > 700+global_y_offset) or (food < 0):
+        if ((player.y_pos > 700+global_y_offset) and (player.alive)) or (food < 0):
                 lives -= 1
                 run = False
         #hud
@@ -870,7 +893,7 @@ while is_running:
 
         #suorituksen nopeus
         clock.tick(60)
-if lives == 0:
+if lives <= 0:
     #musiikki
     pygame.mixer.music.load("sound/background_music_best.wav")
     pygame.mixer.music.set_volume(1)
