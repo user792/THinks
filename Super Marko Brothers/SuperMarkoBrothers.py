@@ -429,7 +429,7 @@ while is_running:
             brick.draw([
                 (global_x_offset+2640, global_y_offset+520),
                 (global_x_offset+6080,global_y_offset+280),
-                (global_x_offset+6960,global_y_offset+120),
+                
                 (global_x_offset+7920,global_y_offset+440),
                 (global_x_offset+7920,global_y_offset+520),
                 (global_x_offset+7920,global_y_offset+360),
@@ -489,11 +489,12 @@ while is_running:
             
             brick.draw([
                 (global_x_offset+1200,global_y_offset+40),
-                (global_x_offset+1360,global_y_offset-80),
+                (global_x_offset+1360,global_y_offset-120),
                 (global_x_offset+2480,global_y_offset+440),
                 (global_x_offset+2560,global_y_offset+440),
                 (global_x_offset+2560,global_y_offset+360),
-                (global_x_offset+2920,global_y_offset+200),
+                (global_x_offset+2960,global_y_offset+200),
+                (global_x_offset+3040,global_y_offset+360),
                 (global_x_offset+3520,global_y_offset+520),
                 (global_x_offset+3600,global_y_offset+520),
                 (global_x_offset+4160,global_y_offset+200),
@@ -707,8 +708,8 @@ while is_running:
 
             food = 3000.0
             entities = [
-                Enemy(x_pos=100,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
-                Enemy(x_pos=200,y_pos=40,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
+                Enemy(x_pos=100,y_pos=440,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
+                Enemy(x_pos=200,y_pos=440,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
                 Enemy(x_pos=7500,y_pos=400,x_velocity=1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
                 Enemy(x_pos=2400,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="car"),
                 Enemy(x_pos=4000,y_pos=40,x_velocity=1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
