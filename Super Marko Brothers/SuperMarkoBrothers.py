@@ -540,18 +540,18 @@ while is_running:
                 (global_x_offset+2080,global_y_offset+520),
                 (global_x_offset+2160,global_y_offset+520),
                 (global_x_offset+2240,global_y_offset+520),
-                (global_x_offset+3220,global_y_offset+520),
-                (global_x_offset+3300,global_y_offset+520),
-                (global_x_offset+3380,global_y_offset+520),
-                (global_x_offset+3460,global_y_offset+520),
-                (global_x_offset+3780,global_y_offset+520),
+                (global_x_offset+3200,global_y_offset+520),
+                (global_x_offset+3280,global_y_offset+520),
+                (global_x_offset+3360,global_y_offset+520),
+                (global_x_offset+3440,global_y_offset+520),
+                (global_x_offset+3760,global_y_offset+520),
                 (global_x_offset+6400,global_y_offset+520),
                 (global_x_offset+6480,global_y_offset+520),
                 (global_x_offset+7120,global_y_offset+520),
                 ],entities)
             
             brick3x.draw([
-                (global_x_offset+2560,global_y_offset+320),
+                (global_x_offset+2560,global_y_offset+280),
                 (global_x_offset+6640,global_y_offset+280),
                 (global_x_offset+7520,global_y_offset+40),
                 ],entities)
