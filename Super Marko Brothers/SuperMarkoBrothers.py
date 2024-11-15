@@ -366,7 +366,8 @@ while is_running:
                 ],entities)
             
             brick3x.draw([
-                (global_x_offset+6640,global_y_offset+280)
+                (global_x_offset+6640,global_y_offset+280),
+                (global_x_offset+4560,global_y_offset+280)
                 ],entities)
             
             brick.draw([
@@ -427,9 +428,8 @@ while is_running:
                 ],entities)
             
             brick.draw([
-                (global_x_offset+2640, global_y_offset+520),
+                (global_x_offset+2640,global_y_offset+520),
                 (global_x_offset+6080,global_y_offset+280),
-                
                 (global_x_offset+7920,global_y_offset+440),
                 (global_x_offset+7920,global_y_offset+520),
                 (global_x_offset+7920,global_y_offset+360),
@@ -494,7 +494,7 @@ while is_running:
                 (global_x_offset+2560,global_y_offset+440),
                 (global_x_offset+2560,global_y_offset+360),
                 (global_x_offset+2960,global_y_offset+200),
-                (global_x_offset+3040,global_y_offset+360),
+                (global_x_offset+3040,global_y_offset+200),
                 (global_x_offset+3520,global_y_offset+520),
                 (global_x_offset+3600,global_y_offset+520),
                 (global_x_offset+4160,global_y_offset+200),
@@ -556,6 +556,7 @@ while is_running:
             
             brick3x.draw([
                 (global_x_offset+2560,global_y_offset+280),
+                (global_x_offset+4720,global_y_offset+280),
                 (global_x_offset+6640,global_y_offset+280),
                 (global_x_offset+7520,global_y_offset+40),
                 ],entities)
@@ -681,7 +682,8 @@ while is_running:
                 Enemy(x_pos=2080,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
                 Enemy(x_pos=2160,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
                 Enemy(x_pos=3440,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=2,anim_speed=6,type="doge"),
-                Enemy(x_pos=5360,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=6,anim_speed=6,type="car")
+                Enemy(x_pos=5360,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=6,anim_speed=6,type="car"),
+                Enemy(x_pos=4560,y_pos=440,x_velocity=-1,y_velocity=0,frame_count=6,anim_speed=6,type="car")
                         ]
             items = [
                 Item(type="bucket",x_pos=7600,y_pos=440)
@@ -692,7 +694,7 @@ while is_running:
             pygame.mixer.music.set_volume(1)
             pygame.mixer.music.play(-1)
             #pelaajan alustaminen
-            player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =marko_frames,x_pos=0,y_pos=0,can_jump=False,jump_time=0,jump=-10,max_jump=30)
+            player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =marko_frames,x_pos=0,y_pos=440,can_jump=False,jump_time=0,jump=-10,max_jump=30)
 
             sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x_night.png").convert_alpha())
             sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand_night.png").convert_alpha())
@@ -726,7 +728,7 @@ while is_running:
             pygame.mixer.music.set_volume(1)
             pygame.mixer.music.play(-1)
             #pelaajan alustaminen
-            player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =polo_frames,x_pos=0,y_pos=0,can_jump=False,jump_time=0,jump=-10,max_jump=30)
+            player = Attribute(y_velocity=0.0, x_velocity=0.0, on_ground=True, speed=0.5,character =polo_frames,x_pos=0,y_pos=440,can_jump=False,jump_time=0,jump=-10,max_jump=30)
 
             sand10x = Object(width=800,height=80,texture=pygame.image.load("materials/sand10x_snow.png").convert_alpha())
             sand = Object(width=80,height=80,texture=pygame.image.load("materials/sand_snow.png").convert_alpha())
@@ -916,7 +918,7 @@ if lives == 0:
                         
                         csvreader = csv.reader(file)
                         for indexi,row in enumerate(csvreader):
-                            if len(row)<= 0:
+                            if len(row)>= 0:
                                 if score > int(row[1]) and not [name,score] in save_this:
                                     save_this.append([name,score])
                                 save_this.append(row)
