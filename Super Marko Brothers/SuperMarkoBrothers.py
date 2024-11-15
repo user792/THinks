@@ -27,7 +27,8 @@ fontxl =pygame.font.Font('freesansbold.ttf', 100)
 
 jump_sound = pygame.mixer.Sound("sound/jump.wav")
 jump_sound.set_volume(0.01)
-
+taco_sound = pygame.mixer.Sound("sound/taco_sound.wav")
+taco_sound.set_volume(0.01)
 while is_running:
     #pelin elollisten olijoiden attributejen tallennukseen käytettävä classi
     class Attribute:
@@ -269,6 +270,7 @@ while is_running:
                 if item.type == "bucket":
                     win = True
                 elif item.type == "taco":
+                    taco_sound.play()
                     food += 1000
                     lives += 1
                 elif item.type == "sauce":
