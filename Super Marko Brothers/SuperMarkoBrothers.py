@@ -718,7 +718,7 @@ while is_running:
                     ]
             items = [
                 Item(type="bucket",x_pos=7360, y_pos=-40),
-                Item(type="taco",x_pos=4640, y_pos=200)
+                Item(type="sauce",x_pos=4640, y_pos=200)
                     ]
         elif level == 3:
             #musiikki
