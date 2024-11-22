@@ -805,8 +805,6 @@ while is_running:
             
         if level >= 5:
             run = False
-            polo_murderer =True
-            marko_murderer = True
             prison = pygame.transform.scale(pygame.image.load('materials/background_prison.png').convert_alpha(), (800, 600))
             bliss = pygame.transform.scale(pygame.image.load('materials/background_bliss.png').convert_alpha(), (800, 600))
             policer = pygame.transform.scale(pygame.image.load('police/policer.png').convert_alpha(), (80, 80))
