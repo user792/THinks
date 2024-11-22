@@ -10,6 +10,8 @@ is_running = True
 lives = 3
 level = 1
 score = 0
+polo_murderer = False
+marko_murderer = False
 
 #näytön asetuksia
 
@@ -30,6 +32,7 @@ jump_sound.set_volume(0.01)
 taco_sound = pygame.mixer.Sound("sound/taco_sound.wav")
 taco_sound.set_volume(0.01)
 while is_running:
+    has_killed = False
     #pelin elollisten olijoiden attributejen tallennukseen käytettävä classi
     class Attribute:
         def __init__(self, y_velocity:float, x_velocity:float, on_ground:bool, speed:float,character, x_pos:float, y_pos:float,can_jump:bool,jump_time:int,jump:int,max_jump:int):
@@ -84,7 +87,8 @@ while is_running:
             if global_y_offset <= 0:
                 global_y_offset = 0
             if self.x_pos <= 0:
-                self.x_pos = 1
+                self.x_pos = 0
+                self.x_velocity = 0                                   
             if self.x_pos >= 800:
                 self.x_pos = 799
         def movement(self):
@@ -290,15 +294,19 @@ while is_running:
         for entity in entities:
             if entity.y_pos >= 700:
                 ded.append(entity)
+
+
             if entity.type == "doge":
                 if (entity.x_pos + global_x_offset+5 <= player.x_pos+80 <= entity.x_pos +160+ global_x_offset-5) and (entity.y_pos+global_y_offset-80-20 <= player.y_pos <= entity.y_pos+global_y_offset-80): 
                     ded.append(entity)
                     player.y_velocity = player.jump
                     current_level_score += 100
-                    
+                    has_killed = True
                 elif pygame.Rect.colliderect(entity.rect,player.rect):
                     
-                    player.alive = False            
+                    player.alive = False 
+
+
             elif entity.type == "car":
                 if (entity.x_pos + global_x_offset+10 <= player.x_pos+80 <= entity.x_pos +160+ global_x_offset-10) and (entity.y_pos+global_y_offset-80-20 <= player.y_pos <= entity.y_pos+global_y_offset-80): 
                     player.y_velocity = player.jump
@@ -308,8 +316,12 @@ while is_running:
                         entity.x_velocity = entity.x_velocity *10
                     else:
                         entity.x_velocity = -entity.x_velocity
+                    has_killed = True
                 elif pygame.Rect.colliderect(entity.rect,player.rect) and player.alive:
                     player.alive = False
+
+
+
             for upsidedown in entities:
                 if (upsidedown.flip == True) and (not upsidedown == entity):
                     if pygame.Rect.colliderect(entity.rect,upsidedown.rect):
@@ -792,7 +804,17 @@ while is_running:
                     ]
         
 
+
     while run:
+        if level >= 5:
+            if marko_murderer and polo_murderer:
+                print("D:")
+            elif marko_murderer and not polo_murderer:
+                print("marko D:")
+            elif not marko_murderer and polo_murderer:
+                print("polo sD:")
+            elif not marko_murderer and not polo_murderer:
+                print(":D")
         food -= 1
         #näytön tyhjennys
         screen.fill((0,0,0))
@@ -857,28 +879,62 @@ while is_running:
                     player.y_velocity = -10
                 else:
                     player.y_velocity += 1
-                
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        is_running = False
+                        run = False
+                        
                     
                 screen.blit(player.character[6],(player.x_pos,player.y_pos))
                 pygame.display.update()
                 clock.tick(60)
             
-        if win:    
-            level += 1
+        if win:  
+            if player.character == polo_frames and has_killed:
+                polo_murderer = True
+            elif player.character == marko_frames and has_killed:
+                marko_murderer = True
+
             current_level_score += food//10*10
             score += current_level_score
             pygame.mixer.music.load("sound/winnin.wav")
             pygame.mixer.music.set_volume(1)
             pygame.mixer.music.play(1)
+            flippera = False
+            flipperb = False                            
+
             run = False
-            for i in range(120):
+            
+            for i in range(30):
                 #ikkunan sulkeminen
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         is_running = False
                         run = False
-                clock.tick(60)
 
+                screen.fill((0,0,0))
+                screen.blit(bg, (global_x_offset,global_y_offset))
+                screen.blit(pygame.transform.flip(player.character[0],flippera,flipperb),(player.x_pos,player.y_pos))
+                drawer(level,entities,items)
+                if flippera == False and flipperb == True:
+                    flipperb = False            
+                elif flippera == True and flipperb == True:
+                    flippera = False
+                elif flippera == True and flipperb == True:
+                    flipperb = True
+                elif flippera == True and flipperb == False:
+                    flipperb = True
+                elif flippera == False and flipperb == False:
+                    flippera = True
+
+
+                
+                
+                
+                
+                pygame.display.update()                                       
+                clock.tick(15)
+            level += 1
         #ikkunan sulkeminen
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -904,7 +960,10 @@ while is_running:
                 screen.blit(player.character[4],(player.x_pos,player.y_pos))
                 pygame.display.update()
                 clock.tick(60)
-                
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        is_running = False
+                        run = False
         #hud
         screen.blit(font.render("lives",False,(0,0,0)),(650,0))
         screen.blit(font.render(f"{lives}",False,(0,0,0)),(700,50))
