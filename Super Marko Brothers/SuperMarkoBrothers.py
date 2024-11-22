@@ -802,7 +802,7 @@ while is_running:
             items = [
                 Item(type="bucket",x_pos=7600,y_pos=-40)
                     ]
-        level = 5
+            
         if level >= 5:
             run = False
             polo_murderer =True
