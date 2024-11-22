@@ -578,7 +578,7 @@ while is_running:
                 ],entities)
             
             lootbox_taco.draw([
-                (global_x_offset+3620,global_y_offset+280),
+                (global_x_offset+3600,global_y_offset+280),
             ],entities)
             
             well.draw([
