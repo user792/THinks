@@ -802,19 +802,65 @@ while is_running:
             items = [
                 Item(type="bucket",x_pos=7600,y_pos=-40)
                     ]
-        
-
-
-    while run:
+        level = 5
         if level >= 5:
+            run = False
+            polo_murderer =True
+            marko_murderer = True
+            prison = pygame.transform.scale(pygame.image.load('materials/background_prison.png').convert_alpha(), (800, 600))
+            bliss = pygame.transform.scale(pygame.image.load('materials/background_bliss.png').convert_alpha(), (800, 600))
+            policer = pygame.transform.scale(pygame.image.load('police/policer.png').convert_alpha(), (80, 80))
             if marko_murderer and polo_murderer:
-                print("D:")
+                for t in range(120):
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            quit()
+                    screen.blit(prison,(0,0))
+                    screen.blit(policer,(80,500))
+                    screen.blit(policer,(200,500))
+                    screen.blit(policer,(300,500))
+                    screen.blit(polo_frames[4],(500,500))
+                    screen.blit(marko_frames[4],(480,480))
+                    pygame.display.update()
+                    clock.tick(60)
             elif marko_murderer and not polo_murderer:
-                print("marko D:")
+                for t in range(120):
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            quit()
+                    screen.blit(prison,(0,0))
+                    screen.blit(policer,(80,500))
+                    screen.blit(policer,(200,500))
+                    screen.blit(policer,(300,500))
+                    screen.blit(marko_frames[4],(500,500))
+                    pygame.display.update()
+                    clock.tick(60)
             elif not marko_murderer and polo_murderer:
-                print("polo sD:")
+                for t in range(120):
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            quit()
+                    screen.blit(prison,(0,0))
+                    screen.blit(policer,(80,500))
+                    screen.blit(policer,(200,500))
+                    screen.blit(policer,(300,500))
+                    screen.blit(polo_frames[4],(500,500))
+                    pygame.display.update()
+                    clock.tick(60)
             elif not marko_murderer and not polo_murderer:
-                print(":D")
+                for t in range(120):
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            quit()
+                    screen.blit(bliss,(0,0))
+                    screen.blit(marko_frames[4],(140,240))
+                    screen.blit(polo_frames[0],(500,500))
+                    pygame.display.update()
+                    clock.tick(60)
+            is_running = False
+            lives = 0
+    while run:
+
         food -= 1
         #näytön tyhjennys
         screen.fill((0,0,0))
@@ -881,8 +927,7 @@ while is_running:
                     player.y_velocity += 1
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
-                        is_running = False
-                        run = False
+                        quit()
                         
                     
                 screen.blit(player.character[6],(player.x_pos,player.y_pos))
@@ -909,8 +954,7 @@ while is_running:
                 #ikkunan sulkeminen
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
-                        is_running = False
-                        run = False
+                        quit()
 
                 screen.fill((0,0,0))
                 screen.blit(bg, (global_x_offset,global_y_offset))
@@ -938,8 +982,7 @@ while is_running:
         #ikkunan sulkeminen
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                is_running = False
-                run = False
+                quit()
         #pelaajan kuolema pudotukseen
         if ((player.y_pos > 700+global_y_offset) and (player.alive) or food <= 0):
             lives -= 1
@@ -962,8 +1005,7 @@ while is_running:
                 clock.tick(60)
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
-                        is_running = False
-                        run = False
+                        quit()
         #hud
         screen.blit(font.render("lives",False,(0,0,0)),(650,0))
         screen.blit(font.render(f"{lives}",False,(0,0,0)),(700,50))
@@ -994,9 +1036,7 @@ if lives <= 0:
     while ask:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                ask = False
-                writing = False
-                yes = False
+                quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     writing = True
@@ -1014,8 +1054,7 @@ if lives <= 0:
     while writing: 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                writing = False
-                yes = False
+                quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
                     name = name[:-1]
@@ -1097,7 +1136,7 @@ if lives <= 0:
         clock.tick(60)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                yes = False
+                quit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_DOWN:
                     if scroll+12 < len(high_scores):
