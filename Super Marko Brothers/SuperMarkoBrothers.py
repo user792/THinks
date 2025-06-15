@@ -1120,12 +1120,13 @@ if lives <= 0:
     writing = False
     yes = False
     while ask:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                quit()
         key = pygame.key.get_pressed()
         if key[pygame.K_F11]:
             pygame.display.toggle_fullscreen()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit()
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     writing = True
@@ -1141,12 +1142,13 @@ if lives <= 0:
         clock.tick(60)
     name = ""
     while writing: 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                quit()
         key = pygame.key.get_pressed()
         if key[pygame.K_F11]:
             pygame.display.toggle_fullscreen()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit()
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
                     name = name[:-1]
