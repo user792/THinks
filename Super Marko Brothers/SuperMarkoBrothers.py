@@ -16,11 +16,17 @@ import pygame, csv, ctypes
 user32 = ctypes.windll.user32
 screensize = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
 screensize2 = user32.GetSystemMetrics(78), user32.GetSystemMetrics(79)
-if screensize[0] / 10 < screensize[1] / 7.5:
-    size = screensize[0] / 20
-else:
-    size = screensize[1] / 15
+#screensize = (800, 600)
 
+if screensize[0] / 10 < screensize[1] / 7.5:
+    size = screensize[0] // 10
+    print("1")
+else:
+    size = screensize[1] // 7.5
+    print("2")
+print(size)
+#dsize = 100
+print(size)
 print(screensize)
 #pygamen initialisaatio
 pygame.init()
@@ -31,6 +37,7 @@ level = 1
 score = 0
 polo_murderer = False
 marko_murderer = False
+f11_timeout = True
 #size = 80
 t_velocity = 9
 
@@ -38,7 +45,8 @@ t_velocity = 9
 
 SCREEN_WIDTH = size*10
 SCREEN_HEIGHT = size*7.5
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT),pygame.FULLSCREEN)
+
 windowsize = pygame.display.get_window_size()
 print(windowsize)
 #ikkunan nimi
@@ -81,7 +89,7 @@ while is_running:
                 self.y_velocity = t_velocity*(size/80)
             else:
                 self.y_velocity += gravity
-            self.x_velocity = self.x_velocity * x_delta
+            self.x_velocity = self.x_velocity * x_delta 
             
             self.x_pos += self.x_velocity
             self.y_pos += self.y_velocity
@@ -122,6 +130,7 @@ while is_running:
                 self.delay = 0
                 if self.frameid >= self.frame_count:
                     self.frameid = 0
+            
             
 
             #pelaajan syötteet
@@ -250,7 +259,7 @@ while is_running:
             if self.y_velocity > t_velocity*(size/80):
                 self.y_velocity = t_velocity*(size/80)
             else:
-                self.y_velocity += gravity
+                self.y_velocity += gravity*(size/80)
             
             
             self.x_pos += self.x_velocity
@@ -688,6 +697,14 @@ while is_running:
         pygame.draw.rect(screen,(0,0,0),pygame.rect.Rect(size*10,0,screensize[0],screensize[1]))
         pygame.draw.rect(screen,(0,0,0),pygame.rect.Rect(0,size*7.5,screensize[0],screensize[1]))        
         windowsize = pygame.display.get_window_size()
+    def fullscreen():
+        global f11_timeout
+        key = pygame.key.get_pressed()
+        if key[pygame.K_F11] and f11_timeout:
+            pygame.display.toggle_fullscreen()
+            f11_timeout = False
+        elif not key[pygame.K_F11] and not f11_timeout:
+            f11_timeout = True
 
     #pelaajan polo animaatio framejen tuonti
     polo_frames = []
@@ -902,9 +919,8 @@ while is_running:
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT:
                             quit()
-                    key = pygame.key.get_pressed()
-                    if key[pygame.K_F11]:
-                        pygame.display.toggle_fullscreen()
+                    fullscreen()
+                        
                     screen.blit(prison,(0,0))
                     screen.blit(policer,(size,(size*6.25)))
                     screen.blit(policer,((size*2.5),(size*6.25)))
@@ -919,9 +935,7 @@ while is_running:
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT:
                             quit()
-                    key = pygame.key.get_pressed()
-                    if key[pygame.K_F11]:
-                        pygame.display.toggle_fullscreen()
+                    fullscreen()
                     screen.blit(prison,(0,0))
                     screen.blit(policer,(size,(size*6.25)))
                     screen.blit(policer,((size*2.5),(size*6.25)))
@@ -935,9 +949,7 @@ while is_running:
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT:
                             quit()
-                    key = pygame.key.get_pressed()
-                    if key[pygame.K_F11]:
-                        pygame.display.toggle_fullscreen()
+                    fullscreen()
                     screen.blit(prison,(0,0))
                     screen.blit(policer,(size,(size*6.25)))
                     screen.blit(policer,((size*2.5),(size*6.25)))
@@ -951,9 +963,7 @@ while is_running:
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT:
                             quit()
-                    key = pygame.key.get_pressed()
-                    if key[pygame.K_F11]:
-                        pygame.display.toggle_fullscreen()
+                    fullscreen()
                     screen.blit(bliss,(0,0))
                     screen.blit(marko_frames[4],((size*1.75),(size*3)))
                     screen.blit(polo_frames[0],((size*6.25),(size*6.25)))
@@ -1009,9 +1019,7 @@ while is_running:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         quit()
-                key = pygame.key.get_pressed()
-                if key[pygame.K_F11]:
-                    pygame.display.toggle_fullscreen()
+                fullscreen()
                     
                 screen.blit(player.character[6],(player.x_pos,player.y_pos))
                 cover()
@@ -1039,9 +1047,7 @@ while is_running:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         quit()
-                key = pygame.key.get_pressed()
-                if key[pygame.K_F11]:
-                    pygame.display.toggle_fullscreen()
+                fullscreen()
                 screen.fill(bg_colour)
                 screen.blit(bg, (global_x_offset,global_y_offset))
                 screen.blit(pygame.transform.flip(player.character[0],flippera,flipperb),(player.x_pos,player.y_pos))
@@ -1065,13 +1071,13 @@ while is_running:
                 pygame.display.update()                                       
                 clock.tick(15)
             level += 1
+
         #ikkunan sulkeminen
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quit()
-        key = pygame.key.get_pressed()
-        if key[pygame.K_F11]:
-            pygame.display.toggle_fullscreen()
+        #fullscreen f11
+        fullscreen()
         #pelaajan kuolema pudotukseen
         if ((player.y_pos > (size*8.75)+global_y_offset) and (player.alive) or food <= 0):
             lives -= 1
@@ -1094,9 +1100,7 @@ while is_running:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         quit()
-                key = pygame.key.get_pressed()
-                if key[pygame.K_F11]:
-                    pygame.display.toggle_fullscreen()
+                fullscreen()
 
         #hud
         hud()
@@ -1120,9 +1124,7 @@ if lives <= 0:
     writing = False
     yes = False
     while ask:
-        key = pygame.key.get_pressed()
-        if key[pygame.K_F11]:
-            pygame.display.toggle_fullscreen()
+        fullscreen()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quit()
@@ -1142,9 +1144,7 @@ if lives <= 0:
         clock.tick(60)
     name = ""
     while writing: 
-        key = pygame.key.get_pressed()
-        if key[pygame.K_F11]:
-            pygame.display.toggle_fullscreen()
+        fullscreen()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quit()
@@ -1192,9 +1192,7 @@ if lives <= 0:
         score_board()
         pygame.display.update()
         clock.tick(60)
-        key = pygame.key.get_pressed()
-        if key[pygame.K_F11]:
-            pygame.display.toggle_fullscreen()        
+        fullscreen()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quit()
